@@ -11,12 +11,12 @@ import com.example.Project310.model.Book;
 
 @RepositoryRestResource
 public interface BooksRepository extends CrudRepository<Book, Long> {
-	@Query("select b from Books b where b.tiltle = ?1")
-	List<Book> findByTiltle(@Param("tiltle") String tiltle);
-
-	List<Book> findByTotalPages(@Param("totalPages") String totalPages);
-
-	List<Book> findByRating(@Param("rating") long rating);
-
-	List<Book> findByPublishesDate(@Param("publishesDate") String publishesDate);
+//	@Query("select b from Books b where b.tiltle = ?1")
+//	List<Book> findByTiltle(@Param("tiltle") String tiltle);
+//
+//	List<Book> findByTotalPages(@Param("totalPages") String totalPages);
+//
+//	List<Book> findByRating(@Param("rating") long rating);
+//
+//	List<Book> findByPublishesDate(@Param("publishesDate") String publishesDate);
 }
