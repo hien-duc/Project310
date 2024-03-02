@@ -1,4 +1,4 @@
-package com.example.Project310;
+package com.example.Project310.service;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +14,6 @@ public class OpenApiConfig {
 		info.version("0.0.1");
 		OpenAPI openApi = new OpenAPI();
 		openApi.info(info);
-
 		return openApi;
 
 	}
