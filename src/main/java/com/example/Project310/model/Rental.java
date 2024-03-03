@@ -17,6 +17,7 @@ public class Rental {
 	private Book books;
 
 	public Rental(String memberId, String bookId, String dueDate, String rentDate) {
+		super();
 		this.memberId = memberId;
 		this.bookId = bookId;
 		this.dueDate = dueDate;

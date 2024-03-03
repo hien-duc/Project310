@@ -30,6 +30,12 @@ public class Member {
 		this.birthDay = birthDay;
 		this.SSN = SSN;
 	}
+	
+
+	public Member() {
+		super();
+	}
+
 
 	public long getId() {
 		return id;

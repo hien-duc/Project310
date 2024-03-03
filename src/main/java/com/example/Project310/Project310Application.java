@@ -1,8 +1,11 @@
 package com.example.Project310;
 
 import com.example.Project310.model.*;
-import com.example.Project310.repositories.AuthorsRepository;
-import com.example.Project310.repositories.BooksRepository;
+import com.example.Project310.repositories.AuthorRepository;
+import com.example.Project310.repositories.BookRepository;
+import com.example.Project310.repositories.MemberRepository;
+import com.example.Project310.repositories.RentalRepository;
+
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +19,21 @@ import org.springframework.context.annotation.ComponentScan;
 public class Project310Application implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(Project310Application.class);
-	private final BooksRepository bookRepository;
-	private final AuthorsRepository authorRepository;
+	private final BookRepository bookRepository;
+	private final AuthorRepository authorRepository;
+	private final MemberRepository memberRepository;
+	private final RentalRepository rentalRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Project310Application.class, args);
 	}
 
-	public Project310Application(BooksRepository bookRepository, AuthorsRepository authorRepository) {
+	public Project310Application(BookRepository bookRepository, AuthorRepository authorRepository,
+			MemberRepository memberRepository, RentalRepository rentalRepository) {
 		this.bookRepository = bookRepository;
 		this.authorRepository = authorRepository;
+		this.memberRepository = memberRepository;
+		this.rentalRepository = rentalRepository;
 	}
 
 	@SuppressWarnings("null")

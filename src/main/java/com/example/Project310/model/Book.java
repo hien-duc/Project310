@@ -18,7 +18,7 @@ public class Book {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "author")
 	private Author author;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member")
 	private Member member;
@@ -27,8 +27,8 @@ public class Book {
 	@JoinColumn(name = "rental")
 	private Rental rental;
 
-	public Book(String tiltle, String totalPages, long rating, String publishesDate, String ISBNNumber,
-			Author authors, Rental rental) {
+	public Book(String tiltle, String totalPages, long rating, String publishesDate, String ISBNNumber, Author authors,
+			Rental rental) {
 		super();
 		this.tiltle = tiltle;
 		this.totalPages = totalPages;
@@ -37,6 +37,9 @@ public class Book {
 		this.ISBNNumber = ISBNNumber;
 		this.author = authors;
 		this.rental = rental;
+	}
+
+	public Book() {
 	}
 
 	public Rental getRental() {
@@ -61,9 +64,6 @@ public class Book {
 
 	public void setISBNNumber(String iSBNNumber) {
 		ISBNNumber = iSBNNumber;
-	}
-
-	public Book() {
 	}
 
 	public String getTiltle() {
