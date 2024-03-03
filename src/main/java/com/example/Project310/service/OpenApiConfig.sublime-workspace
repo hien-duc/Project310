@@ -1,0 +1,255 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/D/CSE201/w1/EIDORM.java",
+			"settings":
+			{
+				"buffer_size": 713,
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+			]
+		}
+	],
+	"build_system": "Packages/Java/JavaC.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/5.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/12.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/9.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTOUT/0.out",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/0.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/2.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/8.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/1.in",
+		"/C/Users/Duc/Desktop/Testcase/EIUSTACK.1705044022f63d9d0a9c0dfd45defa9b234e7c1311/8.out",
+		"/C/Users/Duc/Desktop/Testcase/EIUSTACK.1705044022f63d9d0a9c0dfd45defa9b234e7c1311/8.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/11.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTIN/10.in",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTOUT/5.out",
+		"/C/Users/Duc/Downloads/Icons_242d604c-8c8c-40dc-ae52-7982a0cf027e.jxl",
+		"/C/Users/Duc/Desktop/Debug/BASE/TESTOUT/2.out",
+		"/C/Users/Duc/Desktop/Testcase/EIUONCE/3.in",
+		"/C/Users/Duc/Desktop/Testcase/EIUONCE/3.out",
+		"/C/Users/Duc/Desktop/Testcase/EIPICNIC.168189384132b325feb5f26ee662558da4d707965c/0.out",
+		"/C/Users/Duc/Desktop/Testcase/EIKMAX/0.in",
+		"/C/Users/Duc/Desktop/Testcase/EIPICNIC.168189384132b325feb5f26ee662558da4d707965c/0.in",
+		"/C/Users/Duc/.config/whkdrc",
+		"/C/Users/Duc/Desktop/Testcase/EIUONCE/0.in",
+		"/C/Users/Duc/.config/powershell/user_profile.ps1",
+		"/D/PowerShell-Backup/user_profile.ps1",
+		"/C/Users/Duc/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
+		"/C/Users/Duc/Documents/Microsoft.PowerShell_profile.ps1"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/D/CSE201/w1/EIDORM.java",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 713,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								438,
+								438
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 150.399993896
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "OpenApiConfig.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
