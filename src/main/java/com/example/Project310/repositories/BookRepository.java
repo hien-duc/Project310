@@ -3,14 +3,14 @@ package com.example.Project310.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.example.Project310.model.Book;
 
 @RepositoryRestResource
-public interface BookRepository extends CrudRepository<Book, Long> {
+public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
 	@Query("select b from Book b where b.tiltle = ?1")
 	List<Book> findByTiltle(@Param("tiltle") String tiltle);
 
