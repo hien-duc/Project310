@@ -24,13 +24,16 @@ public class LoginController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> getToken(@RequestBody AccountCredentials credentials) {
-		//Generate token and send it in the response Authorization header
-		UsernamePasswordAuthenticationToken creds = new UsernamePasswordAuthenticationToken (credentials.username (), credentials.password());
-		Authentication auth= authenticationManager.authenticate (creds);
+
+		// Generate token and send it in the response Authorization header
+		UsernamePasswordAuthenticationToken creds = new UsernamePasswordAuthenticationToken(credentials.username(),
+				credentials.password());
+		Authentication auth = authenticationManager.authenticate(creds);
 		// Generate token
-		String jwts = 	jwtService.getToken (auth.getName());
+		String jwts = jwtService.getToken(auth.getName());
 		// Build response with the generated token
-		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer" + jwts) .header (HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").build();
+		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwts)
+				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").build();
 	}
 
 }

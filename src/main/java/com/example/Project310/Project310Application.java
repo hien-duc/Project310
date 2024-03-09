@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication()
-@ComponentScan("com.example.Project310.repository")
+@ComponentScan("com.example.Project310")
 public class Project310Application implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(Project310Application.class);
@@ -39,18 +39,19 @@ public class Project310Application implements CommandLineRunner {
 		this.urepository = urepository;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	public void run(String... args) throws Exception {
-		Author authors = new Author("cog", "hehe", "minh");
-		Author authors2 = new Author("2222", "22222", "minh");
+		Author authors = new Author("aaa", "bbb", "ccc");
+		Author authors2 = new Author("ddd", "eee", "fff");
 		authorRepository.saveAll(Arrays.asList(authors, authors2));
 
 		for (Book books : this.bookRepository.findAll()) {
 			logger.info(books.toString());
 		}
+		// Username: user, password: user
 		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER"));
 		// Username: admin, password: admin
 		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
+		urepository.save(new AppUser("duc", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 	}
 }

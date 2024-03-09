@@ -14,7 +14,7 @@ public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String firsName;
 	private String lastName;
 	private String birthDay;
