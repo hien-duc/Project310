@@ -7,8 +7,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.example.Project310.model.AppUser;
 
-@RepositoryRestResource
+@RepositoryRestResource(exported = false)
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 	Optional<AppUser> findByUsername(String username);
-
 }

@@ -6,13 +6,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
 public class JwtService {
-	
+
 	// Generate secret key. Only for demonstration purposes.
 	// In production, you should read it from the application
 	// configuration.
@@ -22,15 +21,12 @@ public class JwtService {
 
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-	// Generate signed JWT token
 	public String getToken(String username) {
 		String token = Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME)).signWith(key).compact();
 		return token;
 	}
 
-	// Get a token from request Authorization header,
-	// verify the token, and get username
 	public String getAuthUser(HttpServletRequest request) {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (token != null) {

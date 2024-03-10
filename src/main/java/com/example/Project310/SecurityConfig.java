@@ -4,6 +4,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.Arrays;
 
+import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.example.Project310.service.UserDetailsServiceImpl;
 
@@ -85,6 +87,7 @@ public class SecurityConfig {
 		config.applyPermitDefaultValues();
 		// localhost:3000 is allowed
 		config.setAllowedOrigins(Arrays.asList ("*"));
+		config.setAllowedOrigins(Arrays.asList ("http://localhost:3000"));
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}

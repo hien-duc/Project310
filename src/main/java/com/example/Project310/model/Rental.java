@@ -7,7 +7,7 @@ public class Rental {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	private String memberId;
 	private String bookId;

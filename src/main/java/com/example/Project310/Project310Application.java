@@ -21,7 +21,7 @@ import com.example.Project310.repositories.MemberRepository;
 import com.example.Project310.repositories.RentalRepository;
 
 @SpringBootApplication()
-@ComponentScan("com.example.Project310.repository")
+@ComponentScan("com.example.Project310")
 public class Project310Application implements CommandLineRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(Project310Application.class);
@@ -44,13 +44,12 @@ public class Project310Application implements CommandLineRunner {
 		this.urepository = urepository;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	public void run(String... args) throws Exception {
 
 		Author authors = new Author("cog", "hehe", "minh");
 
-		
+
 		Author authors1 = new Author("aaa", "bbb", "ccc");
 		Author authors2 = new Author("ddd", "eee", "fff");
 
@@ -59,9 +58,11 @@ public class Project310Application implements CommandLineRunner {
 		for (Book books : this.bookRepository.findAll()) {
 			logger.info(books.toString());
 		}
+		// Username: user, password: user
 		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER"));
 		// Username: admin, password: admin
 		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
+		urepository.save(new AppUser("duc", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 	}
 	public static List<Book> generateBooks() {
         List<Book> books = new ArrayList<>();
@@ -76,7 +77,7 @@ public class Project310Application implements CommandLineRunner {
         books.add(new Book("The Catcher in the Rye", "268", 4.1, "1944-05-07", "3735246707424", null, null));
         books.add(new Book("Harry Potter and the Sorcerer's Stone", "341", 3.2, "1973-07-28", "1672196721504", null, null));
         books.add(new Book("Pride and Prejudice", "319", 4.3, "2014-05-02", "4440904917904", null, null));
-        
+
         return books;
     }
 }
