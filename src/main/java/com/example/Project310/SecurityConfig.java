@@ -46,25 +46,19 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf((csrf) -> csrf.disable()).cors(withDefaults())
-				.sessionManagement(
-						(sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-						.requestMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated())
-				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-				.exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(exceptionHandler));
-		return http.build();
-	}
-//	@Bean
-//	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//		http.csrf((csrf) -> csrf.disable())
+//		http.csrf((csrf) -> csrf.disable()).cors(withDefaults())
 //				.sessionManagement(
 //						(sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 //						.requestMatchers(HttpMethod.POST, "/login").permitAll().anyRequest().authenticated())
-//				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//				.exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(exceptionHandler));
 //		return http.build();
-//	}
+		// Add this one
+		http.csrf((csrf) -> csrf.disable()).cors(withDefaults())
+				.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.anyRequest().permitAll());
+		return http.build();
+	}
 
 	@Bean
 	public AuthenticationManager uthenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -81,7 +75,7 @@ public class SecurityConfig {
 		config.setAllowCredentials(false);
 		config.applyPermitDefaultValues();
 		// localhost:3000 is allowed
-		config.setAllowedOrigins(Arrays.asList ("http://localhost:3000"));
+		config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
