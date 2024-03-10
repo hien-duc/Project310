@@ -1,19 +1,24 @@
 package com.example.Project310;
 
-import com.example.Project310.model.*;
-import com.example.Project310.repositories.AppUserRepository;
-import com.example.Project310.repositories.AuthorRepository;
-import com.example.Project310.repositories.BookRepository;
-import com.example.Project310.repositories.MemberRepository;
-import com.example.Project310.repositories.RentalRepository;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+
+import com.example.Project310.model.AppUser;
+import com.example.Project310.model.Author;
+import com.example.Project310.model.Book;
+import com.example.Project310.repositories.AppUserRepository;
+import com.example.Project310.repositories.AuthorRepository;
+import com.example.Project310.repositories.BookRepository;
+import com.example.Project310.repositories.MemberRepository;
+import com.example.Project310.repositories.RentalRepository;
 
 @SpringBootApplication()
 @ComponentScan("com.example.Project310.repository")
@@ -42,8 +47,13 @@ public class Project310Application implements CommandLineRunner {
 	@SuppressWarnings("null")
 	@Override
 	public void run(String... args) throws Exception {
+
 		Author authors = new Author("cog", "hehe", "minh");
-		Author authors2 = new Author("2222", "22222", "minh");
+
+		
+		Author authors1 = new Author("aaa", "bbb", "ccc");
+		Author authors2 = new Author("ddd", "eee", "fff");
+
 		authorRepository.saveAll(Arrays.asList(authors, authors2));
 
 		for (Book books : this.bookRepository.findAll()) {
@@ -53,4 +63,20 @@ public class Project310Application implements CommandLineRunner {
 		// Username: admin, password: admin
 		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 	}
+	public static List<Book> generateBooks() {
+        List<Book> books = new ArrayList<>();
+
+        books.add(new Book("Moby-Dick", "459", (long) 3.3, "1966-08-17", "0174619147260", null, null));
+        books.add(new Book("Alice's Adventures in Wonderland", "466", (long) 4.9, "1943-11-23", "5346643770632", null, null));
+        books.add(new Book("The Hobbit", "281", (long) 4.6, "2016-01-19", "4668599825457", null, null));
+        books.add(new Book("Harry Potter and the Sorcerer's Stone", "351", (long)3.6, "1976-05-09", "9764810591553", null, null));
+        books.add(new Book("The Catcher in the Rye", "302", (long)4.3, "1995-08-28", "0278789674588", null, null));
+        books.add(new Book("1984", "424", 4.4, "1997-08-18", "6694335191156", null, null));
+        books.add(new Book("Harry Potter and the Sorcerer's Stone", "173", 4.9, "1970-07-20", "9395143909646", null, null));
+        books.add(new Book("The Catcher in the Rye", "268", 4.1, "1944-05-07", "3735246707424", null, null));
+        books.add(new Book("Harry Potter and the Sorcerer's Stone", "341", 3.2, "1973-07-28", "1672196721504", null, null));
+        books.add(new Book("Pride and Prejudice", "319", 4.3, "2014-05-02", "4440904917904", null, null));
+        
+        return books;
+    }
 }
