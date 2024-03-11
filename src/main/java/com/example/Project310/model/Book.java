@@ -7,11 +7,11 @@ public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
-	private String tiltle;
+	private String title;
 	private String totalPages;
-	private long rating;
+	private double rating;
 	private String publishesDate;
 	private String ISBNNumber;
 
@@ -27,10 +27,10 @@ public class Book {
 	@JoinColumn(name = "rental")
 	private Rental rental;
 
-	public Book(String tiltle, String totalPages, long rating, String publishesDate, String ISBNNumber, Author authors,
+	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author authors,
 			Rental rental) {
 		super();
-		this.tiltle = tiltle;
+		this.title = title;
 		this.totalPages = totalPages;
 		this.rating = rating;
 		this.publishesDate = publishesDate;
@@ -66,16 +66,16 @@ public class Book {
 		ISBNNumber = iSBNNumber;
 	}
 
-	public String getTiltle() {
-		return tiltle;
+	public String getTitle() {
+		return title;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setTiltle(String tiltle) {
-		this.tiltle = tiltle;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getTotalPages() {
@@ -86,11 +86,11 @@ public class Book {
 		this.totalPages = totalPages;
 	}
 
-	public long getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(long rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 

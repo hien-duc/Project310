@@ -11,8 +11,8 @@ import com.example.Project310.model.Book;
 
 @RepositoryRestResource
 public interface BookRepository extends CrudRepository<Book, Long> {
-	@Query("select b from Book b where b.tiltle = ?1")
-	List<Book> findByTiltle(@Param("tiltle") String tiltle);
+	@Query("select b from Book b where b.title = ?1")
+	List<Book> findByTitle(@Param("title") String title);
 
 	List<Book> findByTotalPages(@Param("totalPages") String totalPages);
 
