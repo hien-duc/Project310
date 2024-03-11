@@ -3,22 +3,24 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Booklist from "./component/Booklist";
-
+import { QueryClient, QueryClientProvider } from 'react-query'
+import Login from "./component/Login";
+import { Box } from "@mui/material";
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <Container maxWidth="xl">
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar>
         <Toolbar>
-          <Typography variant="h6">Car Shop</Typography>
+          <Box display="flex" justifyContent="center" mt={2} alignItems="center">
+            <Typography variant="h6">Book Shop</Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <QueryClientProvider client={queryClient}>
-        <Booklist />
+        <Login/>
       </QueryClientProvider>
     </Container>
   );
