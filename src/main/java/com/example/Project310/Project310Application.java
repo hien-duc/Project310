@@ -49,13 +49,14 @@ public class Project310Application implements CommandLineRunner {
 
 		Author authors = new Author("cog", "hehe", "minh");
 
-
 		Author authors1 = new Author("aaa", "bbb", "ccc");
 		Author authors2 = new Author("ddd", "eee", "fff");
 
 		authorRepository.saveAll(Arrays.asList(authors, authors2));
+		List<Book> books = generateBooks();
+		bookRepository.saveAll(books);
 
-		for (Book books : this.bookRepository.findAll()) {
+		for (Book book : this.bookRepository.findAll()) {
 			logger.info(books.toString());
 		}
 		// Username: user, password: user
@@ -64,20 +65,25 @@ public class Project310Application implements CommandLineRunner {
 		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 		urepository.save(new AppUser("duc", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
 	}
+
 	public static List<Book> generateBooks() {
-        List<Book> books = new ArrayList<>();
+		List<Book> books = new ArrayList<>();
 
-        books.add(new Book("Moby-Dick", "459", (long) 3.3, "1966-08-17", "0174619147260", null, null));
-        books.add(new Book("Alice's Adventures in Wonderland", "466", (long) 4.9, "1943-11-23", "5346643770632", null, null));
-        books.add(new Book("The Hobbit", "281", (long) 4.6, "2016-01-19", "4668599825457", null, null));
-        books.add(new Book("Harry Potter and the Sorcerer's Stone", "351", (long)3.6, "1976-05-09", "9764810591553", null, null));
-        books.add(new Book("The Catcher in the Rye", "302", (long)4.3, "1995-08-28", "0278789674588", null, null));
-        books.add(new Book("1984", "424", 4.4, "1997-08-18", "6694335191156", null, null));
-        books.add(new Book("Harry Potter and the Sorcerer's Stone", "173", 4.9, "1970-07-20", "9395143909646", null, null));
-        books.add(new Book("The Catcher in the Rye", "268", 4.1, "1944-05-07", "3735246707424", null, null));
-        books.add(new Book("Harry Potter and the Sorcerer's Stone", "341", 3.2, "1973-07-28", "1672196721504", null, null));
-        books.add(new Book("Pride and Prejudice", "319", 4.3, "2014-05-02", "4440904917904", null, null));
+		books.add(new Book("Moby-Dick", "459", (long) 3.3, "1966-08-17", "0174619147260", null, null));
+		books.add(new Book("Alice's Adventures in Wonderland", "466", (long) 4.9, "1943-11-23", "5346643770632", null,
+				null));
+		books.add(new Book("The Hobbit", "281", (long) 4.6, "2016-01-19", "4668599825457", null, null));
+		books.add(new Book("Harry Potter and the Sorcerer's Stone", "351", (long) 3.6, "1976-05-09", "9764810591553",
+				null, null));
+		books.add(new Book("The Catcher in the Rye", "302", (long) 4.3, "1995-08-28", "0278789674588", null, null));
+		books.add(new Book("1984", "424", 4.4, "1997-08-18", "6694335191156", null, null));
+		books.add(new Book("Harry Potter and the Sorcerer's Stone", "173", 4.9, "1970-07-20", "9395143909646", null,
+				null));
+		books.add(new Book("The Catcher in the Rye", "268", 4.1, "1944-05-07", "3735246707424", null, null));
+		books.add(new Book("Harry Potter and the Sorcerer's Stone", "341", 3.2, "1973-07-28", "1672196721504", null,
+				null));
+		books.add(new Book("Pride and Prejudice", "319", 4.3, "2014-05-02", "4440904917904", null, null));
 
-        return books;
-    }
+		return books;
+	}
 }
