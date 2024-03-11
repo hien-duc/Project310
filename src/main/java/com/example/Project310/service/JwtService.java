@@ -11,9 +11,14 @@ import java.util.Date;
 
 @Component
 public class JwtService {
+
+	// Generate secret key. Only for demonstration purposes.
+	// In production, you should read it from the application
+	// configuration.
 	static final long EXPIRATIONTIME = 86400000;
 
-	static final String PREFIX = "Bearer";
+	static final String PREFIX = "Bearer ";
+
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 	public String getToken(String username) {
