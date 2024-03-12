@@ -41,7 +41,7 @@ public class Book {
 
 	public Book() {
 	}
-
+	
 	public Rental getRental() {
 		return rental;
 	}

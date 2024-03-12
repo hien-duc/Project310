@@ -17,7 +17,7 @@ public class JwtService {
 	// configuration.
 	static final long EXPIRATIONTIME = 86400000;
 
-	static final String PREFIX = "Bearer ";
+	static final String PREFIX = "Bearer";
 
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 

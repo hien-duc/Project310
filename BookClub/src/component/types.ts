@@ -1,4 +1,4 @@
- export  type BookResponse = {
+ export type BookResponse = {
   title: string;
   totalPages: string;
   rating: number;
