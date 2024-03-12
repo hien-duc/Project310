@@ -69,7 +69,7 @@ function BookList() {
     { field: "totalPages", headerName: "Total Pages", width: 200 },
     { field: "rating", headerName: "Rating", width: 200 },
     { field: "publishesDate", headerName: "Publishes Date", width: 200 },
-    { field: "ISBNNumber", headerName: "ISBN Number", width: 200 },
+    { field: "isbnnumber", headerName: "ISBN Number", width: 200 },
   ];
   console.log("Books:", books);
   return (
