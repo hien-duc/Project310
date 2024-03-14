@@ -4,6 +4,8 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./components/Login";
+import "./App.css";
+import AppBar from "@mui/material/AppBar";
 const queryClient = new QueryClient();
 
 function App() {
@@ -11,9 +13,11 @@ function App() {
     <>
       <Container maxWidth="xl">
         <CssBaseline />
-        <Toolbar>
-          <Typography variant="h6">Book Shop</Typography>
-        </Toolbar>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6">Book Shop</Typography>
+          </Toolbar>
+        </AppBar>
         <QueryClientProvider client={queryClient}>
           <Login />
         </QueryClientProvider>
