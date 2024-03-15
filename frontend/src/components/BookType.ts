@@ -4,7 +4,11 @@ export type BookResponse = {
   totalPages: string;
   rating: number;
   publishesDate: string;
-  authors: string | null;
+  authors: {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+  };
   isbnnumber: string;
   _links: {
     self: {
@@ -25,7 +29,7 @@ export type BookResponse = {
   };
 };
 
-  export type Book = {
+export type Book = {
   title: string;
   totalPages: string;
   rating: number;

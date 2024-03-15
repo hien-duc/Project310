@@ -1,10 +1,7 @@
-//import BookResponse from "./BookType";
 import AddBook from "./AddBook";
-
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBooks, deleteBook } from "../api/BookAPI";
-
 import {
   DataGrid,
   GridColDef,
@@ -17,8 +14,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import EditBook from "./EditBook";
-// import BookResponse from "./BookType";
-// import EditBook from "./EditBook";
 
 type BooklistProps = {
   logOut?: () => void;
@@ -28,7 +23,6 @@ function BookList({ logOut }: BooklistProps) {
   const [open, setOpen] = useState(false);
 
   const queryClient = useQueryClient();
-
   const { data, error, isSuccess } = useQuery({
     queryKey: ["books"],
     queryFn: getBooks,
@@ -44,11 +38,29 @@ function BookList({ logOut }: BooklistProps) {
     },
   });
   const columns: GridColDef[] = [
-    { field: "title", headerName: "Title", width: 200 },
-    { field: "totalPages", headerName: "Total Pages", width: 200 },
-    { field: "rating", headerName: "Rating", width: 200 },
-    { field: "publishesDate", headerName: "Publishes Date", width: 200 },
-    { field: "isbnnumber", headerName: "ISBN Number", width: 200 },
+    { field: "title", headerName: "Title", width: 300 },
+    { field: "totalPages", headerName: "Total Pages", width: 120 },
+    { field: "rating", headerName: "Rating", width: 70 },
+    { field: "publishesDate", headerName: "Publishes Date", width: 150 },
+    { field: "isbnnumber", headerName: "ISBN Number", width: 150 },
+    {
+      field: "authors",
+      headerName: "Author",
+      width: 200,
+      valueGetter: (params) => {
+        const { firstName, middleName, lastName } = params.row.authors;
+        return `${firstName} ${middleName ? middleName + " " : ""}${lastName}`;
+      },
+    },
+    {
+      field: "authors",
+      headerName: "Author",
+      width: 200,
+      valueGetter: (params) => {
+        const { firstName, middleName, lastName } = params.row.authors;
+        return `${firstName} ${middleName ? middleName + " " : ""}${lastName}`;
+      },
+    },
     {
       field: "edit",
       headerName: "",
@@ -74,7 +86,7 @@ function BookList({ logOut }: BooklistProps) {
           onClick={() => {
             if (
               window.confirm(
-                `Are you sure you want to delete ${params.row.title} ?`
+                `Are you sure you want to delete "${params.row.title}" ?`
               )
             ) {
               mutate(params.row._links.self.href);
@@ -108,6 +120,7 @@ function BookList({ logOut }: BooklistProps) {
             disableRowSelectionOnClick={true}
             getRowId={(row) => row._links.self.href}
             slots={{ toolbar: GridToolbar }}
+            style={{ minWidth: "108%" }} // Ensure the DataGrid takes full width
           />
           <Snackbar
             open={open}
