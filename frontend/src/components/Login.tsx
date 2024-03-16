@@ -1,44 +1,54 @@
-import React, { useState } from "react";
-import { TextField, Button, Stack, Snackbar } from "@mui/material";
+import { useState } from "react";
 import axios from "axios";
-import BookList from "./Booklist";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+
+import Booklist from "./Booklist";
+
+type User = {
+  username: string;
+  password: string;
+};
 
 function Login() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<User>({
     username: "",
     password: "",
   });
+  const [isAuthenticated, setAuth] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8080/login", user);
-      const token = response.headers.authorization;
-      if (token !== null) {
-        const splitToken = token.split("Bearer ");
-        localStorage.setItem("jwt", splitToken[1]);
-        setIsLoggedIn(true);
-      }
-    } catch (error) {
-      setOpen(true);
-    }
-  };
-
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
-  if (isLoggedIn) {
-    return <BookList />;
+
+  const handleLogin = () => {
+    axios
+      .post("http://localhost:8080/login", user, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        const jwtToken = res.headers.authorization;
+        if (jwtToken !== null) {
+          localStorage.setItem("jwt", jwtToken);
+          setAuth(true);
+        }
+      })
+      .catch(() => setOpen(true));
+  };
+
+  const handleLogout = () => {
+    setAuth(false);
+    localStorage.setItem("jwt", "");
+  };
+
+  if (isAuthenticated) {
+    return <Booklist logOut={handleLogout} />;
   } else {
     return (
-      <Stack
-        spacing={2}
-        alignItems="center"
-        justifyContent="center"
-        sx={{ height: "100vh" }}
-      >
+      <Stack spacing={2} alignItems="center" mt={2}>
         <TextField name="username" label="Username" onChange={handleChange} />
         <TextField
           type="password"

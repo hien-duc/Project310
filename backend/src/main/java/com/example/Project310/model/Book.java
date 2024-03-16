@@ -15,11 +15,11 @@ public class Book {
 	private String publishesDate;
 	private String ISBNNumber;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author")
 	private Author author;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "member")
 	private Member member;
 
@@ -28,7 +28,7 @@ public class Book {
 	private Rental rental;
 
 	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author authors,
-			Rental rental) {
+			Rental rental, Member member) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
@@ -37,9 +37,27 @@ public class Book {
 		this.ISBNNumber = ISBNNumber;
 		this.author = authors;
 		this.rental = rental;
+		this.member = member;
+
 	}
 
 	public Book() {
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public Rental getRental() {
