@@ -5,7 +5,7 @@ import { Role } from "../../components/Authentication/UserType.ts";
 import { AuthContext } from "./AuthenticationProvider.tsx";
 
 type ProtectedRouteProps = {
-  children: ReactNode;
+  children?: ReactNode;
   redirectPath?: string;
   roles?: Role[];
 };
@@ -15,17 +15,10 @@ const ProtectedRoute = ({
   children,
   roles = [Role.Guest],
 }: ProtectedRouteProps) => {
-  // mock data
-  // const user: User = {
-  //   name: "Thai Blog",
-  //   age: 18,
-  //   role: Role.Collaborator,
-  // };
   const { user } = useContext(AuthContext); // Retrieve user from AuthContext
   const isGuest = roles.includes(Role.Guest);
-  const isMatchRole = user && roles.includes(user.role); // Check if user exists before accessing its role
-  let isAllow = isGuest || isMatchRole;
-
+  const isMatchRole = user && roles.includes(user.role as Role); // Check if user exists before accessing its role
+  const isAllow = isGuest || isMatchRole;
   if (!isAllow) {
     return <Navigate to={redirectPath ?? "/login"} />;
   }

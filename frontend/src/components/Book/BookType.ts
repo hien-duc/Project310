@@ -34,7 +34,7 @@ export type Book = {
   totalPages: string;
   rating: number;
   publishesDate: string;
-  ISBNNumber: string;
+  isbnnumber: string;
   authors: {
     id: string;
     firstName: string;

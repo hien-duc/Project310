@@ -20,7 +20,7 @@ function BookList() {
   const { logout } = useContext(AuthContext);
   const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
   const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
   const queryClient = useQueryClient();
   const { data, error, isSuccess } = useQuery({
     queryKey: ["books"],
@@ -101,49 +101,52 @@ function BookList() {
       ),
     },
   ];
-  if (isAuthenticated) {
-    if (!isSuccess) {
-      return <span>Loading...</span>;
-    } else if (error) {
-      return <span>Error when fetching books...</span>;
-    } else {
-      return (
-        <div>
-          <>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <AddBook handleBookAdded={handleBookAdded} />
-              <Button onClick={logout}>Log out</Button>
-            </Stack>
-            <DataGrid
-              rows={data}
-              columns={columns}
-              disableRowSelectionOnClick={true}
-              getRowId={(row) => row._links.self.href}
-              slots={{ toolbar: GridToolbar }}
-              style={{ minWidth: "108%" }} // Ensure the DataGrid takes full width
-            />
-            <Snackbar
-              open={openDeleteSnackbar}
-              autoHideDuration={3000}
-              onClose={() => setOpenDeleteSnackbar(false)}
-              message="Book deleted"
-            />
-            <Snackbar
-              open={openAddSnackbar}
-              autoHideDuration={3000}
-              onClose={() => setOpenAddSnackbar(false)}
-              message="Book added"
-            />
-          </>
-        </div>
-      );
-    }
+  if (user === null) {
+    <span>Account is not created...</span>;
   }
-  return <span>You need to login...</span>;
+  if (!isAuthenticated) {
+    <span>You need to login...</span>;
+  }
+  if (!isSuccess) {
+    <span>Loading...</span>;
+  } else if (error) {
+    <span>Error when fetching books...</span>;
+  } else {
+    return (
+      <div>
+        <>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <AddBook handleBookAdded={handleBookAdded} />
+            <Button onClick={logout}>Log out</Button>
+          </Stack>
+          <DataGrid
+            rows={data}
+            columns={columns}
+            disableRowSelectionOnClick={true}
+            getRowId={(row) => row._links.self.href}
+            slots={{ toolbar: GridToolbar }}
+            style={{ minWidth: "108%" }} // Ensure the DataGrid takes full width
+          />
+          <Snackbar
+            open={openDeleteSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenDeleteSnackbar(false)}
+            message="Book deleted"
+          />
+          <Snackbar
+            open={openAddSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenAddSnackbar(false)}
+            message="Book added"
+          />
+        </>
+      </div>
+    );
+  }
 }
 
 export default BookList;

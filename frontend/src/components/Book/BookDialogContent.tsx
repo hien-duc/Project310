@@ -44,8 +44,8 @@ function BookDialogContent({ book, handleChange }: DialogFormProps) {
               />
               <TextField
                 label="ISBN Number"
-                name="ISBNNumber"
-                value={book.ISBNNumber}
+                name="isbnnumber"
+                value={book.isbnnumber}
                 onChange={handleChange}
               />
             </Stack>

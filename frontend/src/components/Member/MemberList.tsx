@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMembers, deleteMember } from "../../api/MemberAPI"; // Assuming similar API functions for members
+import { getMembers, deleteMember } from "../../api/MemberAPI";
 import {
   DataGrid,
   GridColDef,
@@ -17,14 +17,14 @@ import AddMember from "./AddMember";
 import { AuthContext } from "../Authentication/AuthenticationProvider";
 
 function MemberList() {
-  const { logout } = useContext(AuthContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
   const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
 
   const queryClient = useQueryClient();
   const { data, error, isSuccess } = useQuery({
     queryKey: ["members"],
-    queryFn: getMembers, // Assuming getMembers is a function to fetch members from the API
+    queryFn: getMembers,
   });
 
   const { mutate } = useMutation(deleteMember, {
@@ -84,11 +84,16 @@ function MemberList() {
       ),
     },
   ];
-
+  if (user === null) {
+    <span>Account is not created...</span>;
+  }
+  if (!isAuthenticated) {
+    <span>You need to login...</span>;
+  }
   if (!isSuccess) {
-    return <span>Loading...</span>;
+    <span>Loading...</span>;
   } else if (error) {
-    return <span>Error when fetching members...</span>;
+    <span>Error when fetching books...</span>;
   } else {
     return (
       <div>
@@ -101,7 +106,7 @@ function MemberList() {
           <Button onClick={logout}>Log out</Button>
         </Stack>
         <DataGrid
-          rows={data}
+          rows={data ?? []}
           columns={columns}
           disableRowSelectionOnClick={true}
           getRowId={(row) => row._links.self.href}
