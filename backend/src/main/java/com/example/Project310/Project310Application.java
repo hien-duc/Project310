@@ -58,7 +58,7 @@ public class Project310Application implements CommandLineRunner {
 		List<Book> books = new ArrayList<>();
 
 		String[] titles = { "Moby-Dick", "Alice's Adventures in Wonderland", "The Hobbit",
-				"Harry Potter and the Sorcerer's Stone", "The Catcher in the Rye", "1984", "Pride and Prejudice",
+				"Harry Potter and the Sorcerer's Stone", "The 																																																																																						Catcher in the Rye", "1984", "Pride and Prejudice",
 				"To Kill a Mockingbird", "The Great Gatsby", "The Lord of the Rings" };
 		String[] totalPages1 = { "459", "466", "281", "351", "302", "424", "319", "281", "218", "352" };
 		double[] ratings = { 3.3, 4.9, 4.6, 3.6, 4.3, 4.4, 4.3, 4.5, 4.2, 4.7 };
@@ -78,8 +78,9 @@ public class Project310Application implements CommandLineRunner {
 			Author author = authors.get(random.nextInt(authors.size()));
 			authorRepository.save(author);
 			Member member = members.get(random.nextInt(members.size()));
-			memberRepository.save(member); 	
-			Rental rental = null;
+			memberRepository.save(member);
+			Rental rental = rentals.get(i);
+			rentalRepository.save(rental);
 
 			Book book = new Book(title, totalPages, rating, publishesDate, ISBNNumber, author, rental, member);
 			bookRepository.save(book);

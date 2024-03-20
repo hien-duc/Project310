@@ -1,25 +1,55 @@
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
+import { useRoutes, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Login from "./components/Login";
+import CssBaseline from "@mui/material/CssBaseline";
+import "./App.css";
+import AuthenticationProvider from "./components/Authentication/AuthenticationProvider";
+import AuthContainer from "./components/Authentication/AuthContainer";
+import BookList from "./components/Book/BookList";
+import { Role } from "./components/Authentication/UserType";
+import ProtectedRoute from "./components/Authentication/ProtectedRoute";
+
 const queryClient = new QueryClient();
-import "./App.css"
 
 function App() {
+  const routes = useRoutes([
+    {
+      path: "/",
+      index: true,
+      element: <Navigate to="/login" />,
+    },
+    {
+      path: "/",
+      children: [
+        {
+          path: "login",
+          element: <AuthContainer />,
+        },
+        {
+          path: "admin",
+          element: (
+            <ProtectedRoute roles={[Role.Admin]}>
+              <BookList />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+  ]);
+
   return (
-    <>
-      <Container maxWidth="xl">
+    <QueryClientProvider client={queryClient}>
+      <AuthenticationProvider>
         <CssBaseline />
-        <Toolbar>
-          <Typography variant="h6">Book Shop</Typography>
-        </Toolbar>
-        <QueryClientProvider client={queryClient}>
-          <Login />
-        </QueryClientProvider>
-      </Container>
-    </>
+        {routes}
+        {/* <Routes>
+            <Route path="/" element={<AuthContainer />} />
+            <Route path="/register" element={<AuthContainer />} />
+            <Route path="/login" element={<AuthContainer />} />
+            <Route path="/books" element={<BookList />} />
+            <Route path="/members" element={<MemberList />} />
+          </Routes> */}
+      </AuthenticationProvider>
+    </QueryClientProvider>
   );
 }
 

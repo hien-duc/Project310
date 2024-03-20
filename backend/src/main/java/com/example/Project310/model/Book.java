@@ -16,18 +16,19 @@ public class Book {
 	private String ISBNNumber;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "author")
+	@JoinColumn(name = "author_id")
 	private Author author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "member")
+	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rental")
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
+			CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
-	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author authors,
+	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author author,
 			Rental rental, Member member) {
 		super();
 		this.title = title;
@@ -35,7 +36,7 @@ public class Book {
 		this.rating = rating;
 		this.publishesDate = publishesDate;
 		this.ISBNNumber = ISBNNumber;
-		this.author = authors;
+		this.author = author;
 		this.rental = rental;
 		this.member = member;
 
@@ -43,6 +44,8 @@ public class Book {
 
 	public Book() {
 	}
+	
+	
 
 	public Author getAuthor() {
 		return author;

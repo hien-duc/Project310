@@ -13,6 +13,7 @@ public class Rental {
 	private String bookId;
 	private String dueDate;
 	private String rentDate;
+	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "rental")
 	private Book books;
 
@@ -26,6 +27,8 @@ public class Rental {
 
 	public Rental() {
 	}
+	
+	
 
 	public long getId() {
 		return id;

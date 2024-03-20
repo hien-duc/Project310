@@ -1,12 +1,4 @@
-// import React from "react";
-// import {
-//   AppBar,
-//   Toolbar,
-//   IconButton,
-//   Badge,
-//   Typography,
-// } from "@material-ui/core";
-// import { ShoppingCart } from "@material-ui/icons";
+
 // import { Link } from "react-router-dom";
 // import logo from "../../assets/circles.png";
 
