@@ -15,7 +15,7 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String firsName;
+	private String firstName;
 	private String lastName;
 	private String birthDay;
 	private String SSN;
@@ -25,7 +25,7 @@ public class Member {
 
 	public Member(String firsName, String lastName, String birthDay, String SSN) {
 		super();
-		this.firsName = firsName;
+		this.firstName = firsName;
 		this.lastName = lastName;
 		this.birthDay = birthDay;
 		this.SSN = SSN;
@@ -41,12 +41,12 @@ public class Member {
 		return id;
 	}
 
-	public String getFirsName() {
-		return firsName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirsName(String firsName) {
-		this.firsName = firsName;
+	public void setFirstName(String firsName) {
+		this.firstName = firsName;
 	}
 
 	public String getLastName() {

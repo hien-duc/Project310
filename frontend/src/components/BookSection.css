@@ -1,0 +1,59 @@
+/* .book-section {
+  padding: 20px;
+} */
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 300px;
+}
+
+.books-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #c0c0c0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.book-details {
+  padding: 20px;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
+}
+
+.book h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.book p {
+  margin: 0;
+}
+
+.book button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+/* GSAP Hover Animation */
+.gsap-hover {
+  cursor: pointer;
+}
+
+.gsap-hover:hover .book-details {
+  transform: translateY(-10px);
+}
+
+.gsap-hover:hover .book button {
+  transform: translateY(10px);
+}

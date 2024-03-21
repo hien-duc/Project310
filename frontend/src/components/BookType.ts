@@ -17,13 +17,13 @@ export type BookResponse = {
     book: {
       href: string;
     };
-    rental: {
-      href: string;
-    };
     member: {
       href: string;
     };
     author: {
+      href: string;
+    };
+    rental: {
       href: string;
     };
   };
