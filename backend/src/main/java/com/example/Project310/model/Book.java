@@ -16,18 +16,31 @@ public class Book {
 	private String ISBNNumber;
 
 	@ManyToOne(fetch = FetchType.EAGER)
+<<<<<<< HEAD
 	@JoinColumn(name = "author")
 	private Author author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "member")
+=======
+	@JoinColumn(name = "author_id")
+	private Author author;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id")
+>>>>>>> Minh
 	private Member member;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "rental")
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
+			CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
+<<<<<<< HEAD
 	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author authors,
+=======
+	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author author,
+>>>>>>> Minh
 			Rental rental, Member member) {
 		super();
 		this.title = title;
@@ -35,13 +48,31 @@ public class Book {
 		this.rating = rating;
 		this.publishesDate = publishesDate;
 		this.ISBNNumber = ISBNNumber;
-		this.author = authors;
+		this.author = author;
 		this.rental = rental;
 		this.member = member;
 
 	}
 
 	public Book() {
+	}
+	
+	
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public Author getAuthor() {

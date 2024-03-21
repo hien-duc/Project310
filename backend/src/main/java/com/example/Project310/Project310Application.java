@@ -58,7 +58,11 @@ public class Project310Application implements CommandLineRunner {
 		List<Book> books = new ArrayList<>();
 
 		String[] titles = { "Moby-Dick", "Alice's Adventures in Wonderland", "The Hobbit",
+<<<<<<< HEAD
 				"Harry Potter and the Sorcerer's Stone", "The Catcher in the Rye", "1984", "Pride and Prejudice",
+=======
+				"Harry Potter and the Sorcerer's Stone", "The 																																																																																						Catcher in the Rye", "1984", "Pride and Prejudice",
+>>>>>>> Minh
 				"To Kill a Mockingbird", "The Great Gatsby", "The Lord of the Rings" };
 		String[] totalPages1 = { "459", "466", "281", "351", "302", "424", "319", "281", "218", "352" };
 		double[] ratings = { 3.3, 4.9, 4.6, 3.6, 4.3, 4.4, 4.3, 4.5, 4.2, 4.7 };
@@ -78,20 +82,39 @@ public class Project310Application implements CommandLineRunner {
 			Author author = authors.get(random.nextInt(authors.size()));
 			authorRepository.save(author);
 			Member member = members.get(random.nextInt(members.size()));
+<<<<<<< HEAD
 			memberRepository.save(member); 	
 			Rental rental = null;
+=======
+			memberRepository.save(member);
+			Rental rental = rentals.get(i);
+			rentalRepository.save(rental);
+>>>>>>> Minh
 
 			Book book = new Book(title, totalPages, rating, publishesDate, ISBNNumber, author, rental, member);
 			bookRepository.save(book);
 		}
+<<<<<<< HEAD
+=======
+		
+>>>>>>> Minh
 
 //
 //		List<Book> books = generateBooks(authors, rentals, members);
 		bookRepository.saveAll(books);
 
 		// Save user data
+<<<<<<< HEAD
 		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER"));
 		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
+=======
+		Member member = members.get(0);
+		memberRepository.save(member);
+		Member member1 = members.get(1);
+		memberRepository.save(member1);
+		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER",  member));
+		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN", member1));
+>>>>>>> Minh
 	}
 
 	public List<Book> generateBooks(List<Author> authors, List<Rental> rentals, List<Member> members) {
