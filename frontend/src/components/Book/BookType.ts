@@ -42,6 +42,18 @@ export type Book = {
     lastName: string;
   };
 };
+export type Book2 = {
+  title: string;
+  totalPages: string;
+  rating: number;
+  publishesDate: string;
+  isbnnumber: string;
+  authors: {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+  };
+};
 
 export type BookEntry = {
   book: Book;

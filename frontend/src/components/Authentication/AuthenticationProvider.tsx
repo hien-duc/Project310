@@ -4,7 +4,6 @@ import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { User } from "./UserType";
 import { useNavigate } from "react-router-dom";
-import { fetchUser } from "../../api/UserAPI";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -47,8 +46,7 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
         headers: { "Content-Type": "application/json" },
       });
       const jwtToken = res.headers.authorization;
-      const a = res.data;
-      console.log(a);
+
       if (jwtToken) {
         localStorage.setItem("jwt", jwtToken);
         localStorage.setItem("isAuthenticated", "true");

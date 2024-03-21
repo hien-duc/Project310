@@ -2,12 +2,7 @@ package com.example.Project310.model;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Member {
@@ -16,6 +11,7 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+
 	private String firstName;
 	private String lastName;
 	private String birthDay;
@@ -23,6 +19,9 @@ public class Member {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
 	private List<Book> books;
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "member")
+	private AppUser appUser;
 
 	public Member(String firsName, String lastName, String birthDay, String ssn) {
 		super();
@@ -33,7 +32,15 @@ public class Member {
 	}
 
 	public Member() {
-		super();
+	
+	}
+
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 	public List<Book> getBooks() {

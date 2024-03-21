@@ -85,14 +85,19 @@ public class Project310Application implements CommandLineRunner {
 			Book book = new Book(title, totalPages, rating, publishesDate, ISBNNumber, author, rental, member);
 			bookRepository.save(book);
 		}
+		
 
 //
 //		List<Book> books = generateBooks(authors, rentals, members);
 		bookRepository.saveAll(books);
 
 		// Save user data
-		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER"));
-		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN"));
+		Member member = members.get(0);
+		memberRepository.save(member);
+		Member member1 = members.get(1);
+		memberRepository.save(member1);
+		urepository.save(new AppUser("user", "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER",  member));
+		urepository.save(new AppUser("admin", "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW", "ADMIN", member1));
 	}
 
 	public List<Book> generateBooks(List<Author> authors, List<Rental> rentals, List<Member> members) {
