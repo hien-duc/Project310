@@ -15,10 +15,10 @@ const ProtectedRoute = ({
   children,
   roles = [Role.Guest],
 }: ProtectedRouteProps) => {
-  const { user } = useContext(AuthContext); // Retrieve user from AuthContext
+  const { user, isAuthenticated } = useContext(AuthContext); // Retrieve user from AuthContext
   const isGuest = roles.includes(Role.Guest);
   const isMatchRole = user && roles.includes(user.role as Role); // Check if user exists before accessing its role
-  const isAllow = isGuest || isMatchRole;
+  const isAllow = isGuest || isMatchRole || isAuthenticated;
   if (!isAllow) {
     return <Navigate to={redirectPath ?? "/login"} />;
   }

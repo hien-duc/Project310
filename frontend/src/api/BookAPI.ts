@@ -1,7 +1,7 @@
 import { Book, BookEntry, BookResponse } from "../components/Book/BookType";
 import axios, { AxiosRequestConfig } from "axios";
 
-const getAxiosConfig = (): AxiosRequestConfig => {
+export const getAxiosConfig = (): AxiosRequestConfig => {
   const token = localStorage.getItem("jwt");
   return {
     headers: {

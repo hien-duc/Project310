@@ -54,7 +54,6 @@ public class Project310Application implements CommandLineRunner {
 		List<Author> authors = generateAuthors();
 		List<Member> members = generateMembers();
 		List<Rental> rentals = generateRentals();
-
 		List<Book> books = new ArrayList<>();
 
 		String[] titles = { "Moby-Dick", "Alice's Adventures in Wonderland", "The Hobbit",

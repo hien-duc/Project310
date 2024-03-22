@@ -7,6 +7,8 @@ import {
   GridColDef,
   GridCellParams,
   GridToolbar,
+  GridValueGetterParams,
+  GridTreeNodeWithRender,
 } from "@mui/x-data-grid";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -15,6 +17,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import EditBook from "./EditBook";
 import { AuthContext } from "../Authentication/AuthenticationProvider";
+import axios from "axios";
 
 function BookList() {
   const { logout } = useContext(AuthContext);
@@ -40,6 +43,29 @@ function BookList() {
     setOpenAddSnackbar(true);
   };
 
+  const doFetchUser = async (
+    params: GridValueGetterParams<any, any, GridTreeNodeWithRender>
+  ) => {
+    const rentalLink = params.row._links?.rental?.href;
+    if (rentalLink) {
+      try {
+        const response = await axios.get(rentalLink);
+        const availability = response.status === 200 ? "No" : "Yes";
+        // console.log(availability);
+        return availability;
+      } catch (error) {
+        console.error("Error fetching rental information:", error);
+        return "Yes";
+      }
+    } else {
+      return "N/A";
+    }
+  };
+
+  const doGetRental = async (param: any) => {
+    const temp = await doFetchUser(param);
+    return temp;
+  };
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", width: 300 },
     { field: "totalPages", headerName: "Total Pages", width: 120 },
@@ -56,12 +82,14 @@ function BookList() {
       },
     },
     {
-      field: "Available",
+      field: "available",
       headerName: "Available",
       width: 120,
-      valueGetter: (params) => {
-        const rentalLink = params.row._links.rental;
-        return rentalLink ? "No" : "Yes";
+      valueGetter: (param) => {
+        doFetchUser(param).then((hehe: string) => {
+          console.log(hehe);
+          return hehe;
+        });
       },
     },
     {
@@ -101,6 +129,7 @@ function BookList() {
       ),
     },
   ];
+
   if (user === null) {
     <span>Account is not created...</span>;
   }
@@ -129,7 +158,7 @@ function BookList() {
             disableRowSelectionOnClick={true}
             getRowId={(row) => row._links.self.href}
             slots={{ toolbar: GridToolbar }}
-            style={{ minWidth: "108%" }} // Ensure the DataGrid takes full width
+            style={{ minWidth: "100%" }} // Ensure the DataGrid takes full width
           />
           <Snackbar
             open={openDeleteSnackbar}
