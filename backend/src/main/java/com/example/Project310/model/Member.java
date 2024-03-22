@@ -2,12 +2,7 @@ package com.example.Project310.model;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Member {
@@ -15,38 +10,57 @@ public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String firsName;
+
+
+	private String firstName;
 	private String lastName;
 	private String birthDay;
-	private String SSN;
-	
+	private String ssn;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
 	private List<Book> books;
 
-	public Member(String firsName, String lastName, String birthDay, String SSN) {
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "member")
+	private AppUser appUser;
+
+	public Member(String firsName, String lastName, String birthDay, String ssn) {
 		super();
-		this.firsName = firsName;
+		this.firstName = firsName;
 		this.lastName = lastName;
 		this.birthDay = birthDay;
-		this.SSN = SSN;
+		this.ssn = ssn;
 	}
-	
 
 	public Member() {
-		super();
+	
 	}
 
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
 
 	public long getId() {
 		return id;
 	}
 
-	public String getFirsName() {
-		return firsName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirsName(String firsName) {
-		this.firsName = firsName;
+	public void setFirstName(String firsName) {
+		this.firstName = firsName;
 	}
 
 	public String getLastName() {
@@ -65,12 +79,12 @@ public class Member {
 		this.birthDay = birthDay;
 	}
 
-	public String getSSN() {
-		return SSN;
+	public String getSsn() {
+		return ssn;
 	}
 
-	public void setSSN(String sSN) {
-		SSN = sSN;
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
 	}
 
 }
