@@ -63,11 +63,10 @@ function App() {
                 </QueryClientProvider>
               }
             />
-            {/* <Route path="bookList" element={<BookList />} /> */}
             <Route
               path="/books"
               element={
-                <ProtectedRoute roles={[Role.Admin]}>
+                <ProtectedRoute roles={[Role.Guest]}>
                   <BookList />
                 </ProtectedRoute>
               }
