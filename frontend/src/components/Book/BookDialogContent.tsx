@@ -17,7 +17,6 @@ function BookDialogContent({ book, handleChange }: DialogFormProps) {
           <Stack spacing={7} mt={1} direction="row">
             <Stack spacing={2}>
               <label style={{ fontSize: "1.25rem" }}>Book</label>
-
               <TextField
                 label="Title"
                 name="title"
@@ -46,6 +45,12 @@ function BookDialogContent({ book, handleChange }: DialogFormProps) {
                 label="ISBN Number"
                 name="isbnnumber"
                 value={book.isbnnumber}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Price"
+                name="price"
+                value={book.price}
                 onChange={handleChange}
               />
             </Stack>

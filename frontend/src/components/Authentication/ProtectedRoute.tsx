@@ -2,7 +2,7 @@ import { memo, ReactNode, useContext } from "react";
 
 import { Navigate } from "react-router-dom";
 import { Role } from "../../components/Authentication/UserType.ts";
-import { AuthContext } from "./AuthenticationProvider.tsx";
+import { AuthContext } from "../../context/AuthenticationProvider.tsx";
 
 type ProtectedRouteProps = {
   children?: ReactNode;
@@ -15,14 +15,13 @@ const ProtectedRoute = ({
   children,
   roles = [Role.Guest],
 }: ProtectedRouteProps) => {
-  const { user, isAuthenticated } = useContext(AuthContext); // Retrieve user from AuthContext
+  const { user } = useContext(AuthContext);
   const isGuest = roles.includes(Role.Guest);
-  const isMatchRole = user && roles.includes(user.role as Role); // Check if user exists before accessing its role
-  const isAllow = isGuest || isMatchRole || isAuthenticated;
+  const isMatchRole = user && roles.includes(user.role as Role);
+  const isAllow = isGuest || isMatchRole;
   if (!isAllow) {
     return <Navigate to={redirectPath ?? "/login"} />;
   }
-
   return <>{children}</>;
 };
 

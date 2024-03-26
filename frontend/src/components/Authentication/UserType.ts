@@ -17,6 +17,7 @@ export type User = {
   password: string;
   role: string;
 };
+
 export enum Role {
   Admin = "ADMIN",
   Collaborator = "COLLABORATOR",

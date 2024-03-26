@@ -1,5 +1,7 @@
 package com.example.Project310.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +15,8 @@ public class Book {
 	private String totalPages;
 	private double rating;
 	private String publishesDate;
-	private String ISBNNumber;
+	private String isbnnumber;
+	private double price;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
@@ -28,14 +31,15 @@ public class Book {
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
-	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author author,
-			Rental rental, Member member) {
+	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
+			Author author, Rental rental, Member member) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
 		this.rating = rating;
 		this.publishesDate = publishesDate;
-		this.ISBNNumber = ISBNNumber;
+		this.price = price;
+		this.isbnnumber = isbnnumber;
 		this.author = author;
 		this.rental = rental;
 		this.member = member;
@@ -44,8 +48,23 @@ public class Book {
 
 	public Book() {
 	}
+
 	
-	
+	public String getIsbnnumber() {
+		return isbnnumber;
+	}
+
+	public void setIsbnnumber(String isbnnumber) {
+		this.isbnnumber = isbnnumber;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
 	public Author getAuthor() {
 		return author;
@@ -77,14 +96,6 @@ public class Book {
 
 	public void setAuthors(Author authors) {
 		this.author = authors;
-	}
-
-	public String getISBNNumber() {
-		return ISBNNumber;
-	}
-
-	public void setISBNNumber(String iSBNNumber) {
-		ISBNNumber = iSBNNumber;
 	}
 
 	public String getTitle() {

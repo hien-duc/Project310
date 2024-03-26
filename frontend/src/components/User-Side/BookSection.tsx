@@ -5,6 +5,7 @@ import "./BookSection.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Button from "@mui/material/Button";
 import { gsap } from "gsap";
+import { formatCurrency } from "../../utilities/formatCurrency";
 
 const colors = {
   rosewater: "#F5E0DC",
@@ -42,6 +43,7 @@ const BookSection: React.FC = () => {
           totalPages: bookResponse.totalPages,
           rating: bookResponse.rating,
           publishesDate: bookResponse.publishesDate,
+          price: bookResponse.price,
           isbnnumber: bookResponse.isbnnumber,
           authors: {
             firstName: bookResponse.authors.firstName,
@@ -96,11 +98,66 @@ const BookSection: React.FC = () => {
             <div key={index} className="book">
               <div className="book-details">
                 <div className="book-text">
-                  <h3>{book.title}</h3>
-                  <p>Total Pages: {book.totalPages}</p>
-                  <p>Rating: {book.rating}</p>
-                  <p>Publish Date: {book.publishesDate}</p>
+                  <h1>{book.title}</h1>
+                  <p>
+                    <strong>Total Pages:</strong> {book.totalPages}
+                  </p>
+                  <p>
+                    <strong>Rating:</strong> {book.rating}
+                  </p>
+                  <p>
+                    <strong> Publish Date:</strong> {book.publishesDate}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> {formatCurrency(book.price)}
+                  </p>
                 </div>
+                {book && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ShoppingCartIcon />}
+                    onClick={() => handleAddToCart(book)}
+                    sx={{
+                      fontSize: "8px",
+                      bgcolor: colors.blue,
+                      "&:hover": {
+                        bgcolor: colors.sky,
+                      },
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <br />
+      <center>
+        <h1>Shopping</h1>
+      </center>
+      <div className="books-container">
+        {books.slice(0, 10).map((book, index) => (
+          <div key={index} className="book">
+            <div className="book-details">
+              <div className="book-text">
+                <h2>{book.title}</h2>
+                <p>
+                  <strong>Total Pages:</strong> {book.totalPages}
+                </p>
+                <p>
+                  <strong>Rating:</strong> {book.rating}
+                </p>
+                <p>
+                  <strong> Publish Date:</strong> {book.publishesDate}
+                </p>
+                <p>
+                  <strong>Price:</strong> {formatCurrency(book.price)}
+                </p>
+              </div>
+              {book.title && ( // Conditionally render the button when book title is available
                 <Button
                   variant="contained"
                   color="primary"
@@ -116,10 +173,10 @@ const BookSection: React.FC = () => {
                 >
                   Add to Cart
                 </Button>
-              </div>
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import Footer from "./Footer";
+import { formatCurrency } from "../../utilities/formatCurrency";
 
 const colors = {
   rosewater: "#F5E0DC",
@@ -45,6 +46,8 @@ const BookCategory: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedBook, setSelectedBook] = useState<Book2 | null>(null);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchBooksData = async () => {
       try {
@@ -54,6 +57,7 @@ const BookCategory: React.FC = () => {
           totalPages: bookResponse.totalPages,
           rating: bookResponse.rating,
           publishesDate: bookResponse.publishesDate,
+          price: bookResponse.price,
           isbnnumber: bookResponse.isbnnumber,
           authors: {
             firstName: bookResponse.authors.firstName,
@@ -63,6 +67,7 @@ const BookCategory: React.FC = () => {
         }));
         setBooks(convertedBooks);
         setFilteredBooks(convertedBooks);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -153,16 +158,15 @@ const BookCategory: React.FC = () => {
             Filter by Rating (3-4)
           </Button>
         </center>
-        <div className="container">
-          <center></center>
-          <div
-            className="books-container"
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {filteredBooks.map((book, index) => (
+        <div
+          className="books-container"
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {!loading &&
+            filteredBooks.map((book, index) => (
               <div
                 key={index}
                 className="book"
@@ -170,10 +174,19 @@ const BookCategory: React.FC = () => {
               >
                 <div className="book-details">
                   <div className="book-text">
-                    <h3>{book.title}</h3>
-                    <p>Total Pages: {book.totalPages}</p>
-                    <p>Rating: {book.rating}</p>
-                    <p>Publish Date: {book.publishesDate}</p>
+                    <h2>{book.title}</h2>
+                    <p>
+                      <strong>Total Pages:</strong> {book.totalPages}
+                    </p>
+                    <p>
+                      <strong>Rating:</strong> {book.rating}
+                    </p>
+                    <p>
+                      <strong> Publish Date:</strong> {book.publishesDate}
+                    </p>
+                    <p>
+                      <strong>Price:</strong> {formatCurrency(book.price)}
+                    </p>
                   </div>
                   <Button
                     variant="contained"
@@ -193,7 +206,6 @@ const BookCategory: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
         </div>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{selectedBook?.title}</DialogTitle>
@@ -202,6 +214,12 @@ const BookCategory: React.FC = () => {
             <Typography>Rating: {selectedBook?.rating}</Typography>
             <Typography>Publish Date: {selectedBook?.publishesDate}</Typography>
             <Typography>ISBN Number: {selectedBook?.isbnnumber}</Typography>
+            <Typography>
+              Price:{" "}
+              {typeof selectedBook?.price === "number"
+                ? formatCurrency(selectedBook?.price)
+                : selectedBook?.price}
+            </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -225,7 +243,6 @@ const BookCategory: React.FC = () => {
       <br />
       <br />
       <br />
-
       <Footer />
     </div>
   );

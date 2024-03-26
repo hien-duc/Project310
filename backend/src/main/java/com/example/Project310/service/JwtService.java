@@ -16,9 +16,7 @@ public class JwtService {
 	// In production, you should read it from the application
 	// configuration.
 	static final long EXPIRATIONTIME = 86400000;
-
 	static final String PREFIX = "Bearer ";
-
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 	public String getToken(String username) {

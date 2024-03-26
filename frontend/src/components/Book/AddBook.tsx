@@ -21,7 +21,8 @@ function AddBook({ handleBookAdded }: AddBookProps) {
     totalPages: "",
     rating: 0,
     publishesDate: "",
-    ISBNNumber: "",
+    isbnnumber: "",
+    price: 0,
     authors: {
       id: "",
       firstName: "",
@@ -47,9 +48,6 @@ function AddBook({ handleBookAdded }: AddBookProps) {
     setOpen(false);
   };
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setBook({ ...book, [event.target.name]: event.target.value });
-  // };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -77,7 +75,8 @@ function AddBook({ handleBookAdded }: AddBookProps) {
       totalPages: "",
       rating: 0,
       publishesDate: "",
-      ISBNNumber: "",
+      isbnnumber: "",
+      price: 0,
       authors: {
         id: "",
         firstName: "",

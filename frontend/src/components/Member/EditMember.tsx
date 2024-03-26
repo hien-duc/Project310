@@ -51,7 +51,6 @@ function EditMember({ memberData }: FormProps) {
 
   const handleSave = () => {
     const url = memberData._links.self.href;
-
     const memberEntry: MemberEntry = { member, url };
     mutate(memberEntry);
     setMember({

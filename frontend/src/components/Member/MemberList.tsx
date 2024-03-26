@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import EditMember from "./EditMember";
 import AddMember from "./AddMember";
-import { AuthContext } from "../Authentication/AuthenticationProvider";
+import { AuthContext } from "../../context/AuthenticationProvider";
 
 function MemberList() {
   const { isAuthenticated, user, logout } = useContext(AuthContext);

@@ -25,7 +25,8 @@ function EditBook({ bookData }: FormProps) {
     totalPages: "",
     rating: 0,
     publishesDate: "",
-    ISBNNumber: "",
+    price: 0,
+    isbnnumber: "",
     authors: {
       id: "",
       firstName: "",
@@ -50,7 +51,8 @@ function EditBook({ bookData }: FormProps) {
       totalPages: bookData.totalPages,
       rating: bookData.rating,
       publishesDate: bookData.publishesDate,
-      ISBNNumber: bookData.isbnnumber,
+      price: bookData.price,
+      isbnnumber: bookData.isbnnumber,
       authors: {
         id: "",
         firstName: bookData.authors.firstName,
@@ -73,7 +75,8 @@ function EditBook({ bookData }: FormProps) {
       totalPages: "",
       rating: 0,
       publishesDate: "",
-      ISBNNumber: "",
+      price: 0,
+      isbnnumber: "",
       authors: {
         id: "",
         firstName: "",

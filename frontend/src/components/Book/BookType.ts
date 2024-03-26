@@ -9,6 +9,7 @@ export type BookResponse = {
     middleName: string;
     lastName: string;
   };
+  price: number;
   isbnnumber: string;
   _links: {
     self: {
@@ -34,6 +35,7 @@ export type Book = {
   totalPages: string;
   rating: number;
   publishesDate: string;
+  price: number;
   isbnnumber: string;
   authors: {
     id: string;
@@ -47,6 +49,7 @@ export type Book2 = {
   totalPages: string;
   rating: number;
   publishesDate: string;
+  price: number;
   isbnnumber: string;
   authors: {
     firstName: string;
@@ -59,4 +62,3 @@ export type BookEntry = {
   book: Book;
   url: string;
 };
-
