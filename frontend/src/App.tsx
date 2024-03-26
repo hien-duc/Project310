@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import AuthenticationProvider from "./context/AuthenticationProvider";
 import BookList from "./components/Book/BookList";
-import { Role } from "./components/Authentication/UserType";
+import { Role } from "./components/Type/UserType";
 import ProtectedRoute from "./components/Authentication/ProtectedRoute";
 import BookCategory from "./components/User-Side/BookCategory";
 import HomePage from "./components/User-Side/HomePage";

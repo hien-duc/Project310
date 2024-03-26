@@ -1,7 +1,7 @@
 import AddBook from "./AddBook";
 import { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBooks, deleteBook } from "../../api/BookAPI";
+import { deleteBook, getBooks } from "../../api/BookAPI";
 import {
   DataGrid,
   GridColDef,
@@ -16,6 +16,7 @@ import Stack from "@mui/material/Stack";
 import EditBook from "./EditBook";
 import { AuthContext } from "../../context/AuthenticationProvider";
 import { formatCurrency } from "../../utilities/formatCurrency";
+import Login from "../Authentication/Login";
 function BookList() {
   const { logout } = useContext(AuthContext);
   const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
@@ -26,21 +27,25 @@ function BookList() {
     queryFn: getBooks,
   });
 
-  const { mutate } = useMutation(deleteBook, {
-    onSuccess: () => {
-      setOpenDeleteSnackbar(true);
-      queryClient.invalidateQueries({ queryKey: ["books"] });
-    },
-    onError: (err: unknown) => {
-      console.error(err);
-    },
-  });
+  const { mutate } = useMutation(
+    (data: { url: string }) => deleteBook(data.url),
+    {
+      onSuccess: () => {
+        setOpenDeleteSnackbar(true);
+        queryClient.invalidateQueries({ queryKey: ["books"] });
+      },
+      onError: (err: unknown) => {
+        console.error(err);
+      },
+    }
+  );
+
   const handleBookAdded = () => {
     setOpenAddSnackbar(true);
   };
 
   const columns: GridColDef[] = [
-    { field: "title", headerName: "Title", width: 300 },
+    { field: "title", headerName: "Title", width: 200 },
     { field: "totalPages", headerName: "Total Pages", width: 120 },
     { field: "rating", headerName: "Rating", width: 70 },
     { field: "publishesDate", headerName: "Publishes Date", width: 150 },
@@ -59,6 +64,15 @@ function BookList() {
       },
     },
     {
+      field: "href",
+      headerName: "Rental",
+      width: 200,
+      valueGetter: (params) => {
+        const href: string = params.row._links.rental.href;
+        return href;
+      },
+    },
+    {
       field: "authors",
       headerName: "Author",
       width: 200,
@@ -72,19 +86,15 @@ function BookList() {
       headerName: "Available",
       width: 120,
       valueGetter: (params) => {
-        const rentalLink = params.row._links?.rental?.href;
-        if (rentalLink) {
-          const availability = rentalLink !== null ? "No" : "Yes";
-          return availability;
-        } else {
-          return "N/A";
-        }
+        const { price } = params.row.authors;
+        const availability = price <= 0 ? "No" : "Yes";
+        return availability;
       },
     },
     {
       field: "edit",
       headerName: "",
-      width: 90,
+      width: 50,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -95,7 +105,7 @@ function BookList() {
     {
       field: "delete",
       headerName: "",
-      width: 90,
+      width: 50,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -106,7 +116,7 @@ function BookList() {
           onClick={() => {
             if (
               window.confirm(
-                `Are you sure you want to delete "${params.row.title}" ?`
+                `Are you sure you want to delete "${params.row.name}" ?`
               )
             ) {
               mutate(params.row._links.self.href);
@@ -118,10 +128,14 @@ function BookList() {
       ),
     },
   ];
+
+  if (!data) {
+    <Login redirectPath="/books" />;
+  }
   if (!isSuccess) {
-    <span>Loading...</span>;
+    return <span>Loading...</span>;
   } else if (error) {
-    <span>Error when fetching books...</span>;
+    return <span>Error when fetching books...</span>;
   } else {
     return (
       <div>
@@ -129,11 +143,11 @@ function BookList() {
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "center",
               flexDirection: "row",
             }}
           >
-            <div style={{ width: "95%" }}>
+            <div style={{ width: "94%" }}>
               <Stack
                 direction="row"
                 alignItems="center"

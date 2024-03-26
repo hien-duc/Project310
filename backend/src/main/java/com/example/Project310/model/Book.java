@@ -16,40 +16,53 @@ public class Book {
 	private double rating;
 	private String publishesDate;
 	private String isbnnumber;
+	private double quantity;
 	private double price;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
+	@JsonIgnore
 	private Author author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "member_id")
+	@JsonIgnore
 	private Member member;
 
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
 			CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@JsonIgnore
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
+	
+
 	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
-			Author author, Rental rental, Member member) {
+			double quantity, Author author, Member member, Rental rental) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
 		this.rating = rating;
 		this.publishesDate = publishesDate;
-		this.price = price;
 		this.isbnnumber = isbnnumber;
+		this.quantity = quantity;
+		this.price = price;
 		this.author = author;
-		this.rental = rental;
 		this.member = member;
-
+		this.rental = rental;
 	}
 
 	public Book() {
 	}
 
-	
+	public double getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
+	}
+
 	public String getIsbnnumber() {
 		return isbnnumber;
 	}

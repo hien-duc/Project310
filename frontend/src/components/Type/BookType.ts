@@ -4,13 +4,14 @@ export type BookResponse = {
   totalPages: string;
   rating: number;
   publishesDate: string;
+  isbnnumber: string;
+  quantity: number;
+  price: number;
   authors: {
     firstName: string;
     middleName: string;
     lastName: string;
   };
-  price: number;
-  isbnnumber: string;
   _links: {
     self: {
       href: string;
@@ -30,13 +31,14 @@ export type BookResponse = {
   };
 };
 
-export type Book = {
+export type BookForAdding = {
   title: string;
   totalPages: string;
   rating: number;
   publishesDate: string;
-  price: number;
   isbnnumber: string;
+  quantity: number;
+  price: number;
   authors: {
     id: string;
     firstName: string;
@@ -49,8 +51,9 @@ export type Book2 = {
   totalPages: string;
   rating: number;
   publishesDate: string;
-  price: number;
   isbnnumber: string;
+  quantity: number;
+  price: number;
   authors: {
     firstName: string;
     middleName: string;
@@ -59,6 +62,6 @@ export type Book2 = {
 };
 
 export type BookEntry = {
-  book: Book;
+  book: BookForAdding;
   url: string;
 };

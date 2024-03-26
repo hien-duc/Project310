@@ -9,6 +9,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import logoLink from "../../assets/logo2.png";
 import { AuthContext } from "../../context/AuthenticationProvider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Book2 } from "../Type/BookType";
 const fadeIn = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
@@ -121,6 +122,7 @@ const Badge = styled.span`
 
 const NavBar: React.FC = () => {
   const { member, book } = useContext(AuthContext);
+  const res: Book2 | null = book;
   return (
     <Nav>
       <A href="/homePage">
@@ -172,7 +174,7 @@ const NavBar: React.FC = () => {
         <A href="/cart">
           <ShoppingCartIcon />
         </A>
-        {book?.length != 0 ? <Badge>{book?.length}</Badge> : <></>}
+        {/* {res && res !== 0 ? <Badge>{book.length}</Badge> : null} */}
         {member !== null ? (
           <A href="#">
             <AccountCircleIcon />

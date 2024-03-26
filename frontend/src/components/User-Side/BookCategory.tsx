@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getBooks } from "../../api/BookAPI";
-import { Book2, BookResponse } from "../Book/BookType";
+import { Book2, BookResponse } from "../Type/BookType";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Button from "@mui/material/Button";
 import { gsap } from "gsap";
@@ -52,13 +52,18 @@ const BookCategory: React.FC = () => {
     const fetchBooksData = async () => {
       try {
         const bookResponses: BookResponse[] = await getBooks();
-        const convertedBooks: Book2[] = bookResponses.map((bookResponse) => ({
+        const uniqueBooks = bookResponses.filter(
+          (book, index, self) =>
+            index === self.findIndex((b) => b.isbnnumber === book.isbnnumber)
+        );
+        const convertedBooks: Book2[] = uniqueBooks.map((bookResponse) => ({
           title: bookResponse.title,
           totalPages: bookResponse.totalPages,
           rating: bookResponse.rating,
           publishesDate: bookResponse.publishesDate,
           price: bookResponse.price,
           isbnnumber: bookResponse.isbnnumber,
+          quantity: bookResponse.quantity,
           authors: {
             firstName: bookResponse.authors.firstName,
             middleName: bookResponse.authors.middleName,
@@ -67,7 +72,7 @@ const BookCategory: React.FC = () => {
         }));
         setBooks(convertedBooks);
         setFilteredBooks(convertedBooks);
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -76,28 +81,30 @@ const BookCategory: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const bookElements = document.querySelectorAll(".book");
+    if (!loading) {
+      const bookElements = document.querySelectorAll(".book");
 
-    bookElements.forEach((book) => {
-      gsap.set(book, { y: 0 });
+      bookElements.forEach((book) => {
+        gsap.set(book, { y: 0 });
 
-      book.addEventListener("mouseenter", () => {
-        gsap.to(book, {
-          y: -10,
-          duration: 0.3,
-          ease: "power2.out",
+        book.addEventListener("mouseenter", () => {
+          gsap.to(book, {
+            y: -10,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        });
+
+        book.addEventListener("mouseleave", () => {
+          gsap.to(book, {
+            y: 0,
+            duration: 0.3,
+            ease: "power2.out",
+          });
         });
       });
-
-      book.addEventListener("mouseleave", () => {
-        gsap.to(book, {
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      });
-    });
-  }, []);
+    }
+  }, [loading]);
 
   const handleAddToCart = (book: Book2) => {
     console.log("Adding", book.title, "to cart");
@@ -144,18 +151,18 @@ const BookCategory: React.FC = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleFilterByRatingRange(1, 2)}
+            onClick={() => handleFilterByRatingRange(1, 4)}
             style={{ marginRight: "0.5rem" }}
           >
-            Filter by Rating (1-2)
+            Filter by Rating (1-4)
           </Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleFilterByRatingRange(3, 4)}
+            onClick={() => handleFilterByRatingRange(4, 5)}
             style={{ marginRight: "0.5rem" }}
           >
-            Filter by Rating (3-4)
+            Filter by Rating (4-5)
           </Button>
         </center>
         <div
@@ -165,47 +172,45 @@ const BookCategory: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          {!loading &&
-            filteredBooks.map((book, index) => (
-              <div
-                key={index}
-                className="book"
-                onClick={() => handleOpen(book)}
-              >
-                <div className="book-details">
-                  <div className="book-text">
-                    <h2>{book.title}</h2>
-                    <p>
-                      <strong>Total Pages:</strong> {book.totalPages}
-                    </p>
-                    <p>
-                      <strong>Rating:</strong> {book.rating}
-                    </p>
-                    <p>
-                      <strong> Publish Date:</strong> {book.publishesDate}
-                    </p>
-                    <p>
-                      <strong>Price:</strong> {formatCurrency(book.price)}
-                    </p>
-                  </div>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<ShoppingCartIcon />}
-                    onClick={() => handleAddToCart(book)}
-                    sx={{
-                      fontSize: "8px",
-                      bgcolor: colors.blue,
-                      "&:hover": {
-                        bgcolor: colors.sky,
-                      },
-                    }}
-                  >
-                    Add to Cart
-                  </Button>
+          {filteredBooks.map((book, index) => (
+            <div key={index} className="book">
+              <div className="book-details">
+                <div className="book-text" onClick={() => handleOpen(book)}>
+                  <h2>{book.title}</h2>
+                  <p>
+                    <strong>Total Pages:</strong> {book.totalPages}
+                  </p>
+                  <p>
+                    <strong>Rating:</strong> {book.rating}
+                  </p>
+                  <p>
+                    <strong> Publish Date:</strong> {book.publishesDate}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> {formatCurrency(book.price)}
+                  </p>
+                  <p>
+                    <strong>Quantity:</strong> {book.quantity}
+                  </p>
                 </div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<ShoppingCartIcon />}
+                  onClick={() => handleAddToCart(book)}
+                  sx={{
+                    fontSize: "8px",
+                    bgcolor: colors.blue,
+                    "&:hover": {
+                      bgcolor: colors.sky,
+                    },
+                  }}
+                >
+                  Add to Cart
+                </Button>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{selectedBook?.title}</DialogTitle>
@@ -220,6 +225,7 @@ const BookCategory: React.FC = () => {
                 ? formatCurrency(selectedBook?.price)
                 : selectedBook?.price}
             </Typography>
+            <Typography>Price: {selectedBook?.price}</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">

@@ -1,26 +1,25 @@
 import { Button, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../../context/ShoppingCartContext";
 import { formatCurrency } from "../../utilities/formatCurrency";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthenticationProvider";
 
 type CartItemProps = {
-  id: number;
+  isbnnumber: string;
   quantity: number;
 };
 
-export function CartItem({ id, quantity }: CartItemProps) {
+export function CartItem({ isbnnumber, quantity }: CartItemProps) {
+  const { book } = useContext(AuthContext);
   const { removeFromCart } = useShoppingCart();
-  const item = storeItems.find((i) => i.id === id);
+  const item = book.find((i) => i.isbnnumber === isbnnumber);
   if (item == null) return null;
 
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
-      <img
-        src={item.imgUrl}
-        style={{ width: "125px", height: "75px", objectFit: "cover" }}
-      />
       <div className="me-auto">
         <div>
-          {item.name}{" "}
+          {book.name}{" "}
           {quantity > 1 && (
             <span className="text-muted" style={{ fontSize: ".65rem" }}>
               x{quantity}

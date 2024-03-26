@@ -43,9 +43,15 @@ public class Project310Application implements CommandLineRunner {
 	private static final String[] LAST_NAMES = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia" };
 	private static final String[] MIDDLE_NAMES = { "James", "Mary", "Robert", "Patricia", "David", "Linda" };
 	private static final String[] TITLES = { "The Great Gatsby", "To Kill a Mockingbird", "1984", "Pride and Prejudice",
-			"The Catcher in the Rye" };
+			"The Catcher in the Rye", "The Language of Rain", "We Are Powerful", "One Way Ride", "Dragon Invasion",
+			"One Car And The Road", "Stormweaver’s Saga", "Yesterday is Today", "Innocent Eyes", "Behind the Door",
+			"Beyond the Horizon", "Whispers of the Waning Moon", "Slay Like a Princess", "The Lost Portrait",
+			"Heart Me", "Christmas Turtle", "One Way Ride" };
 	private static final String[] ISBNS = { "9780142437209", "9780446310789", "9780451524935", "9780141187761",
-			"9780316769488" };
+			"9780316769488", "9781142437209", "9782446310789", "9780421524935", "9782141187761",
+			"9780316769288", "9780122437209", "9780446312289", "9780451524925", "9780141187721",
+			"9780316769428","9782242437209", "9780446312289", "9780451524225", "9780141187722",
+			"9780322769488",};
 	private static final double[] RATINGS = { 4.5, 4.3, 4.8, 4.1, 4.7 };
 	private static final String[] PUBLISH_DATES = { "01/01/2000", "05/12/1995", "10/22/2010", "03/30/1980",
 			"07/17/2005" };
@@ -84,13 +90,13 @@ public class Project310Application implements CommandLineRunner {
 		List<Author> authors = generateAuthors(20);
 		List<Member> members = generateMembers(20);
 		List<Rental> rentals = generateRentals(20, members);
-		List<Book> books = generateBooks(20, authors, members, rentals);
+		List<Book> books = generateBooks(20, authors, members, rentals, rentalRepository);
 
 		List<AppUser> appUsers = generateAppUsers(20, members);
 		// Save generated data to the database
 		authorRepository.saveAll(authors);
 		memberRepository.saveAll(members);
-		rentalRepository.saveAll(rentals);
+//		rentalRepository.saveAll(rentals);
 		bookRepository.saveAll(books);
 		urepository.saveAll(appUsers);
 
@@ -113,13 +119,14 @@ public class Project310Application implements CommandLineRunner {
 
 		Collections.shuffle(shuffledMembers);
 //		Collections.shuffle(shuffledUsernames);
-		for (int i = 0; i < count; i++) {
-			String username = shuffledUsernames.get(i);
-			String password = PASSWORDS[i];
-			String role = ROLES[random.nextInt(ROLES.length)];
-			Member member = shuffledMembers.get(i);
-			appUsers.add(new AppUser(username, password, role, member));
-		}
+
+		Member member = shuffledMembers.get(0);
+		Member member1 = shuffledMembers.get(1);
+		appUsers.add(
+				new AppUser("user", "$2a$12$Q62s4GxCBo3mImlAub.0ruqxFQf6RySDJuWGTeBFN3QYC6tkY42.q", "USER", member));
+		appUsers.add(
+				new AppUser("admin", "$2a$12$VXaUdQOT7AWrd8ADin1sQesIdfmF.nShAvzcq/BHZtEJVgoCbDjkm", "ADMIN", member1));
+
 		return appUsers;
 	}
 
@@ -147,14 +154,14 @@ public class Project310Application implements CommandLineRunner {
 	}
 
 	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members,
-			List<Rental> rentals) {
+			List<Rental> rentals, RentalRepository rentalRepository) {
 		List<Book> books = new ArrayList<>();
-		List<Rental> shuffledRentals= new ArrayList<>(rentals);
+		List<Rental> shuffledRentals = new ArrayList<>(rentals);
 
 		Collections.shuffle(shuffledRentals);
 
 		for (int i = 0; i < count; i++) {
-			String title = TITLES[random.nextInt(TITLES.length)];
+			String title = TITLES[i];
 			String totalPages = String.valueOf(random.nextInt(500) + 100);
 			double rating = RATINGS[random.nextInt(RATINGS.length)];
 			String publishesDate = PUBLISH_DATES[random.nextInt(PUBLISH_DATES.length)];
@@ -162,8 +169,19 @@ public class Project310Application implements CommandLineRunner {
 			String isbnNumber = ISBNS[random.nextInt(ISBNS.length)];
 			Author author = authors.get(random.nextInt(authors.size()));
 			Member member = members.get(random.nextInt(members.size()));
-			Rental rental = shuffledRentals.get(i);
-			books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, author, rental, member));
+			String memberId = MEMBER_IDS[random.nextInt(MEMBER_IDS.length)];
+			String bookId = MEMBER_IDS[random.nextInt(BOOK_IDS.length)];
+			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
+			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
+			
+			for (int j = 0; j < 3; j++) {
+				Rental rental = new Rental(memberId, bookId, dueDate, rentDate);
+				rentalRepository.save(rental);
+//				Rental rental = shuffledRentals.get(i);
+				books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, 3, author, member,
+						rental));
+			}
+
 		}
 		return books;
 	}

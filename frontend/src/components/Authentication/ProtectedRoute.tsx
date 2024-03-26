@@ -1,7 +1,7 @@
 import { memo, ReactNode, useContext } from "react";
 
 import { Navigate } from "react-router-dom";
-import { Role } from "../../components/Authentication/UserType.ts";
+import { Role } from "../Type/UserType.ts";
 import { AuthContext } from "../../context/AuthenticationProvider.tsx";
 
 type ProtectedRouteProps = {

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Book, BookEntry, BookResponse } from "../components/Book/BookType";
+import { BookForAdding, BookEntry, BookResponse } from "../components/Type/BookType";
 import axios, { AxiosRequestConfig } from "axios";
 import { AuthContext } from "../context/AuthenticationProvider";
-import { User } from "../components/Authentication/UserType";
+import { User } from "../components/Type/UserType";
 
 export const getAxiosConfig = (): AxiosRequestConfig => {
   const token = localStorage.getItem("jwt");
@@ -29,7 +29,7 @@ export const deleteBook = async (link: string): Promise<BookResponse> => {
   return response.data;
 };
 
-export const doAddBook = async (book: Book): Promise<BookResponse> => {
+export const doAddBook = async (book: BookForAdding): Promise<BookResponse> => {
   try {
     // First, save the author
     const responseAuthor = await axios.post(
@@ -42,7 +42,7 @@ export const doAddBook = async (book: Book): Promise<BookResponse> => {
     const authorId = extractIdFromHref(responseAuthor.data._links.self.href);
 
     // Update the book's author ID with the created author's ID
-    const bookWithAuthorId: Book = {
+    const bookWithAuthorId: BookForAdding = {
       ...book,
       authors: { ...book.authors, id: authorId },
     };

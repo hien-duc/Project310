@@ -15,9 +15,10 @@ import Stack from "@mui/material/Stack";
 import EditMember from "./EditMember";
 import AddMember from "./AddMember";
 import { AuthContext } from "../../context/AuthenticationProvider";
+import Login from "../Authentication/Login";
 
 function MemberList() {
-  const { isAuthenticated, user, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
   const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
 
@@ -84,11 +85,8 @@ function MemberList() {
       ),
     },
   ];
-  if (user === null) {
-    <span>Account is not created...</span>;
-  }
-  if (!isAuthenticated) {
-    <span>You need to login...</span>;
+  if (!data) {
+    <Login redirectPath="/books" />;
   }
   if (!isSuccess) {
     <span>Loading...</span>;
@@ -96,34 +94,42 @@ function MemberList() {
     <span>Error when fetching books...</span>;
   } else {
     return (
-      <div>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <AddMember handleMemberAdded={handleMemberAdded} />
-          <Button onClick={logout}>Log out</Button>
-        </Stack>
-        <DataGrid
-          rows={data ?? []}
-          columns={columns}
-          disableRowSelectionOnClick={true}
-          getRowId={(row) => row._links.self.href}
-          slots={{ toolbar: GridToolbar }}
-        />
-        <Snackbar
-          open={openDeleteSnackbar}
-          autoHideDuration={3000}
-          onClose={() => setOpenDeleteSnackbar(false)}
-          message="Member deleted"
-        />
-        <Snackbar
-          open={openAddSnackbar}
-          autoHideDuration={3000}
-          onClose={() => setOpenAddSnackbar(false)}
-          message="Member added"
-        />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "row",
+        }}
+      >
+        <div style={{ width: "80%" }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <AddMember handleMemberAdded={handleMemberAdded} />
+            <Button onClick={logout}>Log out</Button>
+          </Stack>
+          <DataGrid
+            rows={data ?? []}
+            columns={columns}
+            disableRowSelectionOnClick={true}
+            getRowId={(row) => row._links.self.href}
+            slots={{ toolbar: GridToolbar }}
+          />
+          <Snackbar
+            open={openDeleteSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenDeleteSnackbar(false)}
+            message="Member deleted"
+          />
+          <Snackbar
+            open={openAddSnackbar}
+            autoHideDuration={3000}
+            onClose={() => setOpenAddSnackbar(false)}
+            message="Member added"
+          />
+        </div>
       </div>
     );
   }
