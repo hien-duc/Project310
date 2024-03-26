@@ -1,6 +1,7 @@
 package com.example.Project310;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -55,8 +56,12 @@ public class Project310Application implements CommandLineRunner {
 	private static final String[] BOOK_IDS = { "B123", "B456", "B789", "B012", "B345" };
 	private static final String[] DUE_DATES = { "04/30/2024", "05/15/2024", "06/10/2024", "07/05/2024", "08/20/2024" };
 	private static final String[] RENT_DATES = { "03/30/2024", "04/15/2024", "05/10/2024", "06/05/2024", "07/20/2024" };
-	private static final String[] USERNAMES = { "user1", "user2", "user3", "user4", "user5" };
-	private static final String[] PASSWORDS = { "password1", "password2", "password3", "password4", "password5" };
+	private static final String[] USERNAMES = { "user1", "user2", "user3", "user4", "user5", "user6", "user7", "user8",
+			"user9", "user10", "user11", "user12", "user13", "user14", "user15", "user16", "user17", "user18", "user19",
+			"user20" };
+	private static final String[] PASSWORDS = { "password1", "password2", "password3", "password4", "password5",
+			"password6", "password7", "password8", "password9", "password10", "password11", "password12", "password13",
+			"password14", "password15", "password16", "password17", "password18", "password19", "password20" };
 	private static final String[] ROLES = { "USER", "ADMIN" };
 
 	public static void main(String[] args) {
@@ -78,14 +83,15 @@ public class Project310Application implements CommandLineRunner {
 
 		List<Author> authors = generateAuthors(20);
 		List<Member> members = generateMembers(20);
-		List<Book> books = generateBooks(20, authors, members);
-		List<Rental> rentals = generateRentals(20, members, bookRepository);
+		List<Rental> rentals = generateRentals(20, members);
+		List<Book> books = generateBooks(20, authors, members, rentals);
+
 		List<AppUser> appUsers = generateAppUsers(20, members);
 		// Save generated data to the database
 		authorRepository.saveAll(authors);
 		memberRepository.saveAll(members);
-		bookRepository.saveAll(books);
 		rentalRepository.saveAll(rentals);
+		bookRepository.saveAll(books);
 		urepository.saveAll(appUsers);
 
 		// Print generated data for verification
@@ -103,11 +109,13 @@ public class Project310Application implements CommandLineRunner {
 	public static List<AppUser> generateAppUsers(int count, List<Member> members) {
 		List<AppUser> appUsers = new ArrayList<>();
 		List<Member> shuffledMembers = new ArrayList<>(members);
-	
+		List<String> shuffledUsernames = Arrays.asList(USERNAMES);
+
 		Collections.shuffle(shuffledMembers);
+//		Collections.shuffle(shuffledUsernames);
 		for (int i = 0; i < count; i++) {
-			String username = USERNAMES[random.nextInt(USERNAMES.length)];
-			String password = PASSWORDS[random.nextInt(PASSWORDS.length)];
+			String username = shuffledUsernames.get(i);
+			String password = PASSWORDS[i];
 			String role = ROLES[random.nextInt(ROLES.length)];
 			Member member = shuffledMembers.get(i);
 			appUsers.add(new AppUser(username, password, role, member));
@@ -138,37 +146,37 @@ public class Project310Application implements CommandLineRunner {
 		return members;
 	}
 
-	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members) {
+	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members,
+			List<Rental> rentals) {
 		List<Book> books = new ArrayList<>();
+		List<Rental> shuffledRentals= new ArrayList<>(rentals);
+
+		Collections.shuffle(shuffledRentals);
+
 		for (int i = 0; i < count; i++) {
 			String title = TITLES[random.nextInt(TITLES.length)];
-			String totalPages = String.valueOf(random.nextInt(500) + 100); // Random number between 100 and 600
+			String totalPages = String.valueOf(random.nextInt(500) + 100);
 			double rating = RATINGS[random.nextInt(RATINGS.length)];
 			String publishesDate = PUBLISH_DATES[random.nextInt(PUBLISH_DATES.length)];
 			double price = Math.round(random.nextDouble() * 300);
 			String isbnNumber = ISBNS[random.nextInt(ISBNS.length)];
 			Author author = authors.get(random.nextInt(authors.size()));
 			Member member = members.get(random.nextInt(members.size()));
-			books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, author, null, member));
+			Rental rental = shuffledRentals.get(i);
+			books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, author, rental, member));
 		}
 		return books;
 	}
 
-	public static List<Rental> generateRentals(int count, List<Member> members, BookRepository bookRepository) {
+	public static List<Rental> generateRentals(int count, List<Member> members) {
 		List<Rental> rentals = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			String memberId = MEMBER_IDS[random.nextInt(MEMBER_IDS.length)];
+			String bookId = MEMBER_IDS[random.nextInt(BOOK_IDS.length)];
 			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
 			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
-
-			// Fetch a random book from the database
-			Optional<Book> optionalBook = bookRepository.findById(random.nextLong());
-			if (optionalBook.isPresent()) {
-				Book book = optionalBook.get();
-				Rental rental = new Rental(memberId, memberId, dueDate, rentDate);
-				rental.setBooks(book);
-				rentals.add(rental);
-			}
+			Rental rental = new Rental(memberId, bookId, dueDate, rentDate);
+			rentals.add(rental);
 		}
 		return rentals;
 	}
