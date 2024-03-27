@@ -29,6 +29,9 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 }
 
+compileJava {
+    options.compilerArgs << "-parameters"
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }

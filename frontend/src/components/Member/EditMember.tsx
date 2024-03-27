@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
-import { Member, MemberResponse, MemberEntry } from "./MemberType"; // Assuming you have Member, MemberResponse, and MemberEntry types defined
+import { Member, MemberResponse, MemberEntry } from "../Type/MemberType"; // Assuming you have Member, MemberResponse, and MemberEntry types defined
 import { updateMember } from "../../api/MemberAPI"; // Assuming you have an updateMember function in your member API
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -51,7 +51,6 @@ function EditMember({ memberData }: FormProps) {
 
   const handleSave = () => {
     const url = memberData._links.self.href;
-
     const memberEntry: MemberEntry = { member, url };
     mutate(memberEntry);
     setMember({

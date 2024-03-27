@@ -1,7 +1,7 @@
 import Hero from "./Hero";
 import Footer from "./Footer";
 import BookSection from "./BookSection";
-function HomePage(){
+function HomePage() {
   return (
     <div>
       <Hero />
@@ -9,6 +9,5 @@ function HomePage(){
       <Footer />
     </div>
   );
-
 }
 export default HomePage;

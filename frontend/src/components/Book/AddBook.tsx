@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import BookDialogContent from "./BookDialogContent";
 import Button from "@mui/material/Button";
-import { Book } from "./BookType";
+import { BookForAdding } from "../Type/BookType";
 
 interface AddBookProps {
   handleBookAdded: () => void;
@@ -16,12 +16,13 @@ function AddBook({ handleBookAdded }: AddBookProps) {
 
   const [open, setOpen] = useState(false);
 
-  const [book, setBook] = useState<Book>({
+  const [book, setBook] = useState<BookForAdding>({
     title: "",
     totalPages: "",
     rating: 0,
     publishesDate: "",
-    ISBNNumber: "",
+    isbnnumber: "",
+    price: 0,
     authors: {
       id: "",
       firstName: "",
@@ -47,9 +48,6 @@ function AddBook({ handleBookAdded }: AddBookProps) {
     setOpen(false);
   };
 
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setBook({ ...book, [event.target.name]: event.target.value });
-  // };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -77,7 +75,8 @@ function AddBook({ handleBookAdded }: AddBookProps) {
       totalPages: "",
       rating: 0,
       publishesDate: "",
-      ISBNNumber: "",
+      isbnnumber: "",
+      price: 0,
       authors: {
         id: "",
         firstName: "",

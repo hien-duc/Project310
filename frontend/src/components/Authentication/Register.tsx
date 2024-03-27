@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Stack, TextField, Button, Snackbar } from "@mui/material";
 import { doAddUser, fetchUser } from "../../api/UserAPI";
 import bcrypt from "bcryptjs";
+import { useNavigate } from "react-router-dom";
 
 const hashPassword = async (password: string) => {
   const saltRounds = 10;
@@ -26,12 +27,20 @@ const Register: React.FC = () => {
     }));
   };
 
+  // const { mutate } = useMutation(fetchUser, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["books"]);
+  //   },
+  //   onError: (err) => {
+  //     console.error(err);
+  //   },
+  // });
+
   const handleRegister = async () => {
     try {
       // Fetch user data to check if username exists
       const hashedPasswordPromise = hashPassword(user.password);
       const hashedPassword = await hashedPasswordPromise;
-      console.log(hashedPassword);
       const userData = await fetchUser();
 
       // Check if the username already exists
@@ -69,6 +78,11 @@ const Register: React.FC = () => {
       setOpen(true);
     }
   };
+  const navigate = useNavigate();
+
+  const handleToggleForm = () => {
+    navigate("/login");
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -98,6 +112,9 @@ const Register: React.FC = () => {
       />
       <Button variant="outlined" color="primary" onClick={handleRegister}>
         Register
+      </Button>
+      <Button color="inherit" onClick={handleToggleForm}>
+        Switch to Register
       </Button>
       <Snackbar
         open={open}

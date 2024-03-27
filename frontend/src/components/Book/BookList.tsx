@@ -1,14 +1,12 @@
 import AddBook from "./AddBook";
 import { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getBooks, deleteBook } from "../../api/BookAPI";
+import { deleteBook, getBooks } from "../../api/BookAPI";
 import {
   DataGrid,
   GridColDef,
   GridCellParams,
   GridToolbar,
-  GridValueGetterParams,
-  GridTreeNodeWithRender,
 } from "@mui/x-data-grid";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
@@ -16,62 +14,64 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import EditBook from "./EditBook";
-import { AuthContext } from "../Authentication/AuthenticationProvider";
-import axios from "axios";
-
+import { AuthContext } from "../../context/AuthenticationProvider";
+import { formatCurrency } from "../../utilities/formatCurrency";
+import Login from "../Authentication/Login";
 function BookList() {
   const { logout } = useContext(AuthContext);
   const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
   const [openAddSnackbar, setOpenAddSnackbar] = useState(false);
-  const { isAuthenticated, user } = useContext(AuthContext);
   const queryClient = useQueryClient();
   const { data, error, isSuccess } = useQuery({
     queryKey: ["books"],
     queryFn: getBooks,
   });
 
-  const { mutate } = useMutation(deleteBook, {
-    onSuccess: () => {
-      setOpenDeleteSnackbar(true);
-      queryClient.invalidateQueries({ queryKey: ["books"] });
-    },
-    onError: (err: unknown) => {
-      console.error(err);
-    },
-  });
+  const { mutate } = useMutation(
+    (data: { url: string }) => deleteBook(data.url),
+    {
+      onSuccess: () => {
+        setOpenDeleteSnackbar(true);
+        queryClient.invalidateQueries({ queryKey: ["books"] });
+      },
+      onError: (err: unknown) => {
+        console.error(err);
+      },
+    }
+  );
+
   const handleBookAdded = () => {
     setOpenAddSnackbar(true);
   };
 
-  const doFetchUser = async (
-    params: GridValueGetterParams<any, any, GridTreeNodeWithRender>
-  ) => {
-    const rentalLink = params.row._links?.rental?.href;
-    if (rentalLink) {
-      try {
-        const response = await axios.get(rentalLink);
-        const availability = response.status === 200 ? "No" : "Yes";
-        // console.log(availability);
-        return availability;
-      } catch (error) {
-        console.error("Error fetching rental information:", error);
-        return "Yes";
-      }
-    } else {
-      return "N/A";
-    }
-  };
-
-  const doGetRental = async (param: any) => {
-    const temp = await doFetchUser(param);
-    return temp;
-  };
   const columns: GridColDef[] = [
-    { field: "title", headerName: "Title", width: 300 },
+    { field: "title", headerName: "Title", width: 200 },
     { field: "totalPages", headerName: "Total Pages", width: 120 },
     { field: "rating", headerName: "Rating", width: 70 },
     { field: "publishesDate", headerName: "Publishes Date", width: 150 },
-    { field: "isbnnumber", headerName: "ISBN Number", width: 150 },
+    {
+      field: "isbnnumber",
+      headerName: "ISBN Number",
+      width: 150,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 100,
+      valueGetter: (params) => {
+        const { price } = params.row;
+        return `${formatCurrency(price)}`;
+      },
+    },
+    {
+      field: "href",
+      headerName: "Rental",
+      width: 200,
+      valueGetter: (params) => {
+        const href: string = params.row._links.rental.href;
+        return href;
+      },
+    },
     {
       field: "authors",
       headerName: "Author",
@@ -85,17 +85,16 @@ function BookList() {
       field: "available",
       headerName: "Available",
       width: 120,
-      valueGetter: (param) => {
-        doFetchUser(param).then((hehe: string) => {
-          console.log(hehe);
-          return hehe;
-        });
+      valueGetter: (params) => {
+        const { price } = params.row.authors;
+        const availability = price <= 0 ? "No" : "Yes";
+        return availability;
       },
     },
     {
       field: "edit",
       headerName: "",
-      width: 90,
+      width: 50,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -106,7 +105,7 @@ function BookList() {
     {
       field: "delete",
       headerName: "",
-      width: 90,
+      width: 50,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -117,7 +116,7 @@ function BookList() {
           onClick={() => {
             if (
               window.confirm(
-                `Are you sure you want to delete "${params.row.title}" ?`
+                `Are you sure you want to delete "${params.row.name}" ?`
               )
             ) {
               mutate(params.row._links.self.href);
@@ -130,36 +129,42 @@ function BookList() {
     },
   ];
 
-  if (user === null) {
-    <span>Account is not created...</span>;
-  }
-  if (!isAuthenticated) {
-    <span>You need to login...</span>;
+  if (!data) {
+    <Login redirectPath="/books" />;
   }
   if (!isSuccess) {
-    <span>Loading...</span>;
+    return <span>Loading...</span>;
   } else if (error) {
-    <span>Error when fetching books...</span>;
+    return <span>Error when fetching books...</span>;
   } else {
     return (
       <div>
         <>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+            }}
           >
-            <AddBook handleBookAdded={handleBookAdded} />
-            <Button onClick={logout}>Log out</Button>
-          </Stack>
-          <DataGrid
-            rows={data}
-            columns={columns}
-            disableRowSelectionOnClick={true}
-            getRowId={(row) => row._links.self.href}
-            slots={{ toolbar: GridToolbar }}
-            style={{ minWidth: "100%" }} // Ensure the DataGrid takes full width
-          />
+            <div style={{ width: "94%" }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <AddBook handleBookAdded={handleBookAdded} />
+                <Button onClick={logout}>Log out</Button>
+              </Stack>
+              <DataGrid
+                rows={data}
+                columns={columns}
+                disableRowSelectionOnClick={true}
+                getRowId={(row) => row._links.self.href}
+                slots={{ toolbar: GridToolbar }}
+              />
+            </div>
+          </div>
           <Snackbar
             open={openDeleteSnackbar}
             autoHideDuration={3000}

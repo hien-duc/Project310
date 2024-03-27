@@ -1,13 +1,11 @@
-import {
-  BookForAdding,
-  BookEntry,
-  BookResponse,
-} from "../components/Type/BookType";
+import { useContext } from "react";
+import { BookForAdding, BookEntry, BookResponse } from "../components/Type/BookType";
 import axios, { AxiosRequestConfig } from "axios";
+import { AuthContext } from "../context/AuthenticationProvider";
+import { User } from "../components/Type/UserType";
 
 export const getAxiosConfig = (): AxiosRequestConfig => {
-  const token = sessionStorage.getItem("jwt");
-  console.log("token" + token);
+  const token = localStorage.getItem("jwt");
   return {
     headers: {
       Authorization: token,
@@ -16,41 +14,40 @@ export const getAxiosConfig = (): AxiosRequestConfig => {
   };
 };
 
-export const getBooksAdmin = async (): Promise<BookResponse[]> => {
+export const getCartProducts = async (user: User): Promise<BookResponse[]> => {
+
   const response = await axios.get(
-    "http://localhost:8080/api/books",
+    "http://localhost:8080/api/appUsers/search/findByUsername?username=" + user.username,
     getAxiosConfig()
-  );
-  return response.data._embedded.books;
-};
-export const getBooks = async (): Promise<BookResponse[]> => {
-  const response = await axios.get("http://localhost:8080/api/books");
+    );
+
   return response.data._embedded.books;
 };
 
 export const deleteBook = async (link: string): Promise<BookResponse> => {
-  try {
-    const response = await axios.delete(link, getAxiosConfig());
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting book:", error);
-    throw error;
-  }
+  const response = await axios.delete(link, getAxiosConfig());
+  return response.data;
 };
+
 export const doAddBook = async (book: BookForAdding): Promise<BookResponse> => {
   try {
+    // First, save the author
     const responseAuthor = await axios.post(
       "http://localhost:8080/api/authors",
       book.authors,
       getAxiosConfig()
     );
 
+    // Assuming the author API returns the created author's ID in the response links
     const authorId = extractIdFromHref(responseAuthor.data._links.self.href);
 
+    // Update the book's author ID with the created author's ID
     const bookWithAuthorId: BookForAdding = {
       ...book,
       authors: { ...book.authors, id: authorId },
     };
+
+    // Now, save the book
     const responseBook = await axios.post(
       "http://localhost:8080/api/books",
       bookWithAuthorId,
@@ -59,6 +56,7 @@ export const doAddBook = async (book: BookForAdding): Promise<BookResponse> => {
 
     return responseBook.data;
   } catch (error) {
+    // Handle errors here
     console.error("Error adding book:", error);
     throw error;
   }
@@ -72,6 +70,7 @@ export const updateBook = async (
   bookEntry: BookEntry
 ): Promise<BookResponse> => {
   try {
+    // First, save the author if it doesn't exist yet
     if (!bookEntry.book.authors.id) {
       const responseAuthor = await axios.post(
         "http://localhost:8080/api/authors",
@@ -79,11 +78,14 @@ export const updateBook = async (
         getAxiosConfig()
       );
 
+      // Assuming the author API returns the created author's ID in the response links
       const authorId = extractIdFromHref(responseAuthor.data._links.self.href);
 
+      // Update the book's author ID with the created author's ID
       bookEntry.book.authors.id = authorId;
     }
 
+    // Now, update the book
     const response = await axios.put(
       bookEntry.url,
       bookEntry.book,
@@ -92,6 +94,7 @@ export const updateBook = async (
 
     return response.data;
   } catch (error) {
+    // Handle errors here
     console.error("Error updating book:", error);
     throw error;
   }

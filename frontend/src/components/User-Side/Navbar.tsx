@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useContext } from "react";
 import BookIcon from "@mui/icons-material/Book";
 import PeopleIcon from "@mui/icons-material/People";
 import styled, { keyframes } from "styled-components";
@@ -7,7 +7,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CategoryIcon from "@mui/icons-material/Category";
 import HomeIcon from "@mui/icons-material/Home";
 import logoLink from "../../assets/logo2.png";
-
+import { AuthContext } from "../../context/AuthenticationProvider";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Book2 } from "../Type/BookType";
 const fadeIn = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
@@ -62,15 +64,14 @@ const A = styled.a`
   display: flex;
   align-items: center;
   color: ${colors.text};
-  padding: 10px 15px;
+  padding: 0px 10px;
   text-decoration: none;
   transition: background-color 0.3s, transform 0.3s, border-radius 0.3s;
 
   &:hover {
     color: ${colors.rosewater};
     transform: translateY(-2px);
-    padding: 10px 15px;
-    border-radius: 10px;
+    padding: 0px 10px;
   }
 
   svg {
@@ -104,8 +105,24 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
 `;
+const Badge = styled.span`
+  position: absolute;
+  top: 30px;
+  right: 240px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px;
+  border-radius: 50%;
+  &:hover {
+    color: ${colors.rosewater};
+  }
+`;
 
 const NavBar: React.FC = () => {
+  const { member, book } = useContext(AuthContext);
+  const res: Book2 | null = book;
   return (
     <Nav>
       <A href="/homePage">
@@ -148,7 +165,8 @@ const NavBar: React.FC = () => {
         </Li>
         <Li>
           <A href="/bookCategory">
-            <CategoryIcon />Category
+            <CategoryIcon />
+            Category
           </A>
         </Li>
       </Ul>
@@ -156,8 +174,17 @@ const NavBar: React.FC = () => {
         <A href="/cart">
           <ShoppingCartIcon />
         </A>
-        <SignInButton to="/login">Sign In</SignInButton>
+        {/* {res && res !== 0 ? <Badge>{book.length}</Badge> : null} */}
+        {member !== null ? (
+          <A href="#">
+            <AccountCircleIcon />
+            {member.firstName}
+          </A>
+        ) : (
+          <SignInButton to="/login">Sign In</SignInButton>
+        )}
       </ButtonContainer>
+      {/* </ShoppingCart> */}
     </Nav>
   );
 };

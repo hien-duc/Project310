@@ -1,5 +1,7 @@
 package com.example.Project310.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,39 +15,69 @@ public class Book {
 	private String totalPages;
 	private double rating;
 	private String publishesDate;
-	private String ISBNNumber;
+	private String isbnnumber;
+	private double quantity;
+	private double price;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
+	@JsonIgnore
 	private Author author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "member_id")
+	@JsonIgnore
 	private Member member;
 
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
 			CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@JsonIgnore
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
 
-	public Book(String title, String totalPages, double rating, String publishesDate, String ISBNNumber, Author author,
-			Rental rental, Member member) {
+	
+
+	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
+			double quantity, Author author, Member member, Rental rental) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
 		this.rating = rating;
 		this.publishesDate = publishesDate;
-		this.ISBNNumber = ISBNNumber;
+		this.isbnnumber = isbnnumber;
+		this.quantity = quantity;
+		this.price = price;
 		this.author = author;
-		this.rental = rental;
 		this.member = member;
-
+		this.rental = rental;
 	}
 
 	public Book() {
 	}
-	
-	
+
+	public double getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getIsbnnumber() {
+		return isbnnumber;
+	}
+
+	public void setIsbnnumber(String isbnnumber) {
+		this.isbnnumber = isbnnumber;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
 	public Author getAuthor() {
 		return author;
@@ -77,14 +109,6 @@ public class Book {
 
 	public void setAuthors(Author authors) {
 		this.author = authors;
-	}
-
-	public String getISBNNumber() {
-		return ISBNNumber;
-	}
-
-	public void setISBNNumber(String iSBNNumber) {
-		ISBNNumber = iSBNNumber;
 	}
 
 	public String getTitle() {
