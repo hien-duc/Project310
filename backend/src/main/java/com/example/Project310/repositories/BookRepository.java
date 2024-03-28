@@ -23,7 +23,11 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 	List<Book> findByPublishesDate(@Param("publishesDate") String publishesDate);
 
 	List<Book> findByIsbnnumber(@Param("isbnnumber") String isbnnumber);
-	
-	 List<Book> findByMember(@Param("member")Member member);
+
+	@Query("SELECT b FROM Book b JOIN b.member m JOIN m.appUser u WHERE u.username = :username")
+	List<Book> findByUsername(@Param("username") String username);
+
+	@Query("SELECT b FROM Book b JOIN b.member m WHERE m.id = :memberId")
+	List<Book> findByMemberId(@Param("memberId") Long memberId);
 
 }

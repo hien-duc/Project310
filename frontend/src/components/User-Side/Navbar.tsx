@@ -9,7 +9,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import logoLink from "../../assets/logo2.png";
 import { AuthContext } from "../../context/AuthenticationProvider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Book2 } from "../Type/BookType";
 const fadeIn = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
@@ -107,8 +106,8 @@ const ButtonContainer = styled.div`
 `;
 const Badge = styled.span`
   position: absolute;
-  top: 30px;
-  right: 240px;
+  bottom: 13px;
+  right: 8px;
   background-color: red;
   color: white;
   font-size: 12px;
@@ -120,9 +119,30 @@ const Badge = styled.span`
   }
 `;
 
+const CartContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const StyledButton = styled.button`
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  svg {
+    margin-right: 8px;
+    color: ${colors.mauve};
+    transition: fill 0.3s;
+  }
+`;
+
 const NavBar: React.FC = () => {
-  const { member, book } = useContext(AuthContext);
-  const res: Book2 | null = book;
+  const { member, book, openCart } = useContext(AuthContext);
   return (
     <Nav>
       <A href="/homePage">
@@ -171,10 +191,13 @@ const NavBar: React.FC = () => {
         </Li>
       </Ul>
       <ButtonContainer>
-        <A href="/cart">
-          <ShoppingCartIcon />
-        </A>
-        {/* {res && res !== 0 ? <Badge>{book.length}</Badge> : null} */}
+        <CartContainer>
+          <StyledButton onClick={openCart}>
+            <ShoppingCartIcon />
+          </StyledButton>
+          {book && book.length !== 0 ? <Badge>{book.length}</Badge> : null}
+        </CartContainer>
+
         {member !== null ? (
           <A href="#">
             <AccountCircleIcon />
@@ -184,7 +207,6 @@ const NavBar: React.FC = () => {
           <SignInButton to="/login">Sign In</SignInButton>
         )}
       </ButtonContainer>
-      {/* </ShoppingCart> */}
     </Nav>
   );
 };

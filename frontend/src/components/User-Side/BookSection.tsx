@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { getBooks } from "../../api/BookAPI";
 import { Book2, BookResponse } from "../Type/BookType";
 import "./BookSection.css";
@@ -6,6 +6,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Button from "@mui/material/Button";
 import { gsap } from "gsap";
 import { formatCurrency } from "../../utilities/formatCurrency";
+import { doAddBookCart } from "../../api/CartAPI";
+import { AuthContext } from "../../context/AuthenticationProvider";
 
 const colors = {
   rosewater: "#F5E0DC",
@@ -90,9 +92,10 @@ const BookSection: React.FC = () => {
       });
     }
   }, [loading]);
-
+  const { user, member } = useContext(AuthContext);
   const handleAddToCart = (book: Book2) => {
-    console.log("Adding", book.title, "to cart");
+    if (!member || !user) return;
+    doAddBookCart(book, member, user);
   };
 
   return (

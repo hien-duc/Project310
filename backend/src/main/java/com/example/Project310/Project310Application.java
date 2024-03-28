@@ -47,8 +47,8 @@ public class Project310Application implements CommandLineRunner {
 			"One Car And The Road", "Stormweaver’s Saga", "Yesterday is Today", "Innocent Eyes", "Behind the Door",
 			"Beyond the Horizon", "Whispers of the Waning Moon", "Slay Like a Princess", "The Lost Portrait",
 			"Heart Me", "Christmas Turtle", "One Way Ride" };
-	private static final String[] ISBNS = { "9780142437209", "9780446310789", "9780451524935", "9780141187761",
-			"9780316769488", "9781142437209", "9782446310789", "9780421524935", "9782141187761",
+	private static final String[] ISBNS = { "9780142437209", "9780446310789", 	"9780451524935", "9780141187761",
+			"9780316769488", "9781142437209", "9782446310789", "	9780421524935", "9782141187761",
 			"9780316769288", "9780122437209", "9780446312289", "9780451524925", "9780141187721",
 			"9780316769428","9782242437209", "9780446312289", "9780451524225", "9780141187722",
 			"9780322769488",};
