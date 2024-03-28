@@ -143,6 +143,7 @@ const StyledButton = styled.button`
 
 const NavBar: React.FC = () => {
   const { member, book, openCart } = useContext(AuthContext);
+
   return (
     <Nav>
       <A href="/homePage">
@@ -195,13 +196,15 @@ const NavBar: React.FC = () => {
           <StyledButton onClick={openCart}>
             <ShoppingCartIcon />
           </StyledButton>
-          {book && book.length !== 0 ? <Badge>{book.length}</Badge> : null}
+          {book && book.length !== 0 ? (
+            <Badge>{book.length}</Badge>
+          ) : null}
         </CartContainer>
 
         {member !== null ? (
           <A href="#">
             <AccountCircleIcon />
-            {member.firstName}
+            {member.firstName || ""}
           </A>
         ) : (
           <SignInButton to="/login">Sign In</SignInButton>

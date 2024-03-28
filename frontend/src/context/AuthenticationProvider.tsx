@@ -71,32 +71,34 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
 
       const res = await axios.post("http://localhost:8080/login", user, header);
       const jwtToken = res.headers.authorization;
-      const { user: User, member: Member, book: Book } = res.data;
-      console.log(user);
-      console.log(member);
-      console.log(book);
-
       if (jwtToken) {
         sessionStorage.setItem("jwt", jwtToken);
         sessionStorage.setItem("isAuthenticated", "true");
-
-        const userData = res.data; // Assuming res.data contains user, member, and book data
-
-        const { user, member, books } = userData;
-
+        const temp = await axios.get(
+          "http://localhost:8080/api/appUsers/search/findByUsername?username=" +
+            user.username,
+          header
+        );
+        user.role = temp.data.role;
         sessionStorage.setItem("user", JSON.stringify(user));
-        sessionStorage.setItem("member", JSON.stringify(member));
-        sessionStorage.setItem("book", JSON.stringify(books));
 
+        const memLink = temp.data._links.member.href;
+        const memberResponse = await axios.get(memLink, header);
+
+        sessionStorage.setItem("member", JSON.stringify(memberResponse.data));
+        const bookLink = memberResponse.data._links.books.href;
+        const bookResponse = await axios.get(bookLink, header);
+        const books = bookResponse.data._embedded.books;
+
+        sessionStorage.setItem("book", JSON.stringify(books));
+        setBook(books);
+        setMember(memberResponse.data);
         setIsAuthenticated(true);
         setUser(user);
-        setMember(member);
-        setBook(books);
       } else {
         setIsAuthenticated(false);
         setUser(null);
         setMember(null);
-        setBook(null);
       }
     } catch (error) {
       console.error("Login failed:", error);
