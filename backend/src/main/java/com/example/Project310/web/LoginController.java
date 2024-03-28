@@ -19,10 +19,7 @@ public class LoginController {
 	public LoginController(JwtService jwtService, AuthenticationManager authenticationManager) {
 		this.jwtService = jwtService;
 		this.authenticationManager = authenticationManager;
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 152ba0a (fixed cart)
 	}
 
 	@PostMapping("/login")
@@ -38,10 +35,5 @@ public class LoginController {
 		return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + jwts)
 				.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization").build();
 	}
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> parent of 152ba0a (fixed cart)
 
 }

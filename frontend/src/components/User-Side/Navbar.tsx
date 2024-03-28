@@ -121,16 +121,12 @@ const Badge = styled.span`
 `;
 
 const NavBar: React.FC = () => {
-<<<<<<< HEAD
   const { member, book, openCart } = useContext(AuthContext);
   let length = -1;
   if (book !== null) {
     length = book.length;
   }
-=======
-  const { member, book } = useContext(AuthContext);
-  const res: Book2 | null = book;
->>>>>>> parent of 152ba0a (fixed cart)
+
   return (
     <Nav>
       <A href="/homePage">

@@ -46,9 +46,6 @@ public class Book {
 		this.isbnnumber = isbnnumber;
 		this.quantity = quantity;
 		this.price = price;
-		this.author = author;
-		this.member = member;
-		this.rental = rental;
 	}
 
 	public Book() {
