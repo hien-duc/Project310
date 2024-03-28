@@ -1,15 +1,15 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import { User } from "../components/Type/UserType";
-import { Member } from "../components/Type/MemberType";
+import { User } from "../components/Authentication/UserType";
+import { Member } from "../components/Member/MemberType";
 import { useNavigate } from "react-router-dom";
-import { Book2 } from "../components/Type/BookType";
+import { Book } from "../components/Book/BookType";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   member: Member | null;
-  book: Book2[] | null;
+  book: Book[] | null;
   login: (user: User) => Promise<void>;
   logout: () => void;
 }
@@ -18,7 +18,7 @@ export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
   member: null,
-  book: [],
+  book: null,
   login: async () => {},
   logout: () => {},
 });
@@ -35,17 +35,17 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [member, setMember] = useState<Member | null>(null);
-  const [book, setBook] = useState<Book2[] | null>(null);
+  const [book, setBook] = useState<Book[] | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedAuthState = sessionStorage.getItem("isAuthenticated");
+    const storedAuthState = localStorage.getItem("isAuthenticated");
     if (storedAuthState === "true") {
       setIsAuthenticated(true);
-      const storedUser = sessionStorage.getItem("user");
-      const storedMember = sessionStorage.getItem("member");
-      const storedBook = sessionStorage.getItem("book");
+      const storedUser = localStorage.getItem("user");
+      const storedMember = localStorage.getItem("member");
+      const storedBook = localStorage.getItem("book");
 
       if (storedUser && storedMember && storedBook) {
         setUser(JSON.parse(storedUser));
@@ -69,14 +69,15 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
 >>>>>>> parent of 152ba0a (fixed cart)
 
       if (jwtToken) {
-        sessionStorage.setItem("jwt", jwtToken);
-        sessionStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("jwt", jwtToken);
+        localStorage.setItem("isAuthenticated", "true");
         const temp = await axios.get(
           "http://localhost:8080/api/appUsers/search/findByUsername?username=" +
             user.username,
           header
         );
         user.role = temp.data.role;
+<<<<<<< HEAD
         sessionStorage.setItem("user", JSON.stringify(user));
 <<<<<<< HEAD
 
@@ -97,17 +98,21 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
         setUser(user);
         console.log(sessionStorage.getItem("book"));
 =======
+=======
+        localStorage.setItem("user", JSON.stringify(user));
+
+>>>>>>> parent of d055d8c (added redirect path when authenticate)
         setIsAuthenticated(true);
         setUser(user);
+
         const memLink = temp.data._links.member.href;
         const memberResponse = await axios.get(memLink, header);
         setMember(memberResponse.data);
-        sessionStorage.setItem("member", JSON.stringify(memberResponse.data));
+        localStorage.setItem("member", JSON.stringify(memberResponse.data));
         const bookLink = memberResponse.data._links.books.href;
         const bookResponse = await axios.get(bookLink, header);
-
         setBook(bookResponse.data._embedded);
-        sessionStorage.setItem(
+        localStorage.setItem(
           "book",
           JSON.stringify(bookResponse.data._embedded)
         );
@@ -122,16 +127,15 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
       setIsAuthenticated(false);
       setUser(null);
       setMember(null);
-      setBook(null);
     }
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("jwt");
-    sessionStorage.removeItem("isAuthenticated");
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("member");
-    sessionStorage.removeItem("book");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("user");
+    localStorage.removeItem("member");
+    localStorage.removeItem("book");
     setIsAuthenticated(false);
     setUser(null);
     navigate("/homePage");

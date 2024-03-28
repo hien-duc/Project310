@@ -9,7 +9,6 @@ import HomeIcon from "@mui/icons-material/Home";
 import logoLink from "../../assets/logo2.png";
 import { AuthContext } from "../../context/AuthenticationProvider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Book2 } from "../Type/BookType";
 const fadeIn = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
@@ -121,12 +120,16 @@ const Badge = styled.span`
 `;
 
 const NavBar: React.FC = () => {
+<<<<<<< HEAD
   const { member, book, openCart } = useContext(AuthContext);
   let length = -1;
   if (book !== null) {
     length = book.length;
   }
 
+=======
+  const { member, book } = useContext(AuthContext);
+>>>>>>> parent of d055d8c (added redirect path when authenticate)
   return (
     <Nav>
       <A href="/homePage">
@@ -187,8 +190,12 @@ const NavBar: React.FC = () => {
         <A href="/cart">
           <ShoppingCartIcon />
         </A>
+<<<<<<< HEAD
         {/* {res && res !== 0 ? <Badge>{book.length}</Badge> : null} */}
 >>>>>>> parent of 152ba0a (fixed cart)
+=======
+        {book?.length != 0 ? <Badge>{book?.length}</Badge> : <></>}
+>>>>>>> parent of d055d8c (added redirect path when authenticate)
         {member !== null ? (
           <A href="#">
             <AccountCircleIcon />

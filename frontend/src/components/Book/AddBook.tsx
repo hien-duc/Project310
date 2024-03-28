@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import BookDialogContent from "./BookDialogContent";
 import Button from "@mui/material/Button";
-import { BookForAdding } from "../Type/BookType";
+import { Book } from "./BookType";
 
 interface AddBookProps {
   handleBookAdded: () => void;
@@ -16,7 +16,7 @@ function AddBook({ handleBookAdded }: AddBookProps) {
 
   const [open, setOpen] = useState(false);
 
-  const [book, setBook] = useState<BookForAdding>({
+  const [book, setBook] = useState<Book>({
     title: "",
     totalPages: "",
     rating: 0,

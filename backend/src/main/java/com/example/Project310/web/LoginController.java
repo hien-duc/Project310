@@ -12,6 +12,7 @@ import com.example.Project310.model.AccountCredentials;
 import com.example.Project310.service.JwtService;
 
 @RestController
+
 public class LoginController {
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;

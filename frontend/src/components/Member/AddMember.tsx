@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import MemberDialogContent from "./MemberDialogContent";
 import Button from "@mui/material/Button";
-import { Member } from "../Type/MemberType";
+import { Member } from "./MemberType";
 
 interface AddMemberProps {
   handleMemberAdded: () => void;

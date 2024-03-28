@@ -20,7 +20,6 @@ public class Book {
 	private double rating;
 	private String publishesDate;
 	private String isbnnumber;
-	private double quantity;
 	private double price;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -37,20 +36,27 @@ public class Book {
 	private Rental rental;
 
 	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
-			double quantity, Author author, Member member, Rental rental) {
+			Author author, Rental rental, Member member) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
 		this.rating = rating;
 		this.publishesDate = publishesDate;
-		this.isbnnumber = isbnnumber;
-		this.quantity = quantity;
 		this.price = price;
+<<<<<<< HEAD
+=======
+		this.isbnnumber = isbnnumber;
+		this.author = author;
+		this.rental = rental;
+		this.member = member;
+
+>>>>>>> parent of d055d8c (added redirect path when authenticate)
 	}
 
 	public Book() {
 	}
 
+<<<<<<< HEAD
 	public Long getId() {
 		return id;
 	}
@@ -91,6 +97,9 @@ public class Book {
 		this.publishesDate = publishesDate;
 	}
 
+=======
+	
+>>>>>>> parent of d055d8c (added redirect path when authenticate)
 	public String getIsbnnumber() {
 		return isbnnumber;
 	}

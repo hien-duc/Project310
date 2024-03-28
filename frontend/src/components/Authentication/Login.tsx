@@ -3,11 +3,8 @@ import { Stack, TextField, Button, Snackbar } from "@mui/material";
 import { AuthContext } from "../../context/AuthenticationProvider";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-interface LoginProps {
-  redirectPath?: string; // Path to redirect after successful login
-}
 
-const Login: React.FC<LoginProps> = ({ redirectPath }) => {
+const Login: React.FC = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -26,10 +23,10 @@ const Login: React.FC<LoginProps> = ({ redirectPath }) => {
 
   const handleLogin = async () => {
     await login(user);
-    if (!sessionStorage.getItem("jwt")) {
+    if (!localStorage.getItem("jwt")) {
       setOpen(true);
     } else {
-      navigate(redirectPath || "/homePage");
+      navigate("/homePage");
     }
   };
 

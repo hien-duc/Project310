@@ -2,10 +2,10 @@ import React from "react";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { BookForAdding } from "../Type/BookType";
+import { Book } from "./BookType";
 
 type DialogFormProps = {
-  book: BookForAdding;
+  book: Book;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -51,12 +51,6 @@ function BookDialogContent({ book, handleChange }: DialogFormProps) {
                 label="Price"
                 name="price"
                 value={book.price}
-                onChange={handleChange}
-              />
-              <TextField
-                label="Quantity"
-                name="quantity"
-                value={book.quantity}
                 onChange={handleChange}
               />
             </Stack>

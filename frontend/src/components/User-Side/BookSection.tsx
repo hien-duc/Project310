@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getBooks } from "../../api/BookAPI";
-import { Book2, BookResponse } from "../Type/BookType";
+import { Book2, BookResponse } from "../Book/BookType";
 import "./BookSection.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Button from "@mui/material/Button";
@@ -33,23 +33,18 @@ const colors = {
 
 const BookSection: React.FC = () => {
   const [books, setBooks] = useState<Book2[]>([]);
-  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchBooksData = async () => {
       try {
         const bookResponses: BookResponse[] = await getBooks();
-        const uniqueBooks = bookResponses.filter(
-          (book, index, self) =>
-            index === self.findIndex((b) => b.isbnnumber === book.isbnnumber)
-        );
-        const convertedBooks: Book2[] = uniqueBooks.map((bookResponse) => ({
+        const convertedBooks: Book2[] = bookResponses.map((bookResponse) => ({
           title: bookResponse.title,
           totalPages: bookResponse.totalPages,
           rating: bookResponse.rating,
           publishesDate: bookResponse.publishesDate,
           price: bookResponse.price,
           isbnnumber: bookResponse.isbnnumber,
-          quantity: bookResponse.quantity,
           authors: {
             firstName: bookResponse.authors.firstName,
             middleName: bookResponse.authors.middleName,
@@ -57,7 +52,6 @@ const BookSection: React.FC = () => {
           },
         }));
         setBooks(convertedBooks);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -65,31 +59,29 @@ const BookSection: React.FC = () => {
     fetchBooksData();
   }, []);
 
-  useLayoutEffect(() => {
-    if (!loading) {
-      const bookElements = document.querySelectorAll(".book");
+  useEffect(() => {
+    const bookElements = document.querySelectorAll(".book");
 
-      bookElements.forEach((book) => {
-        gsap.set(book, { y: 0 });
+    bookElements.forEach((book) => {
+      gsap.set(book, { y: 0 });
 
-        book.addEventListener("mouseenter", () => {
-          gsap.to(book, {
-            y: -10,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-
-        book.addEventListener("mouseleave", () => {
-          gsap.to(book, {
-            y: 0,
-            duration: 0.3,
-            ease: "power2.out",
-          });
+      book.addEventListener("mouseenter", () => {
+        gsap.to(book, {
+          y: -10,
+          duration: 0.3,
+          ease: "power2.out",
         });
       });
-    }
-  }, [loading]);
+
+      book.addEventListener("mouseleave", () => {
+        gsap.to(book, {
+          y: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      });
+    });
+  }, []);
 
   const handleAddToCart = (book: Book2) => {
     console.log("Adding", book.title, "to cart");
@@ -105,37 +97,38 @@ const BookSection: React.FC = () => {
           {books.slice(0, 4).map((book, index) => (
             <div key={index} className="book">
               <div className="book-details">
-                <h1>{book.title}</h1>
-                <p>
-                  <strong>Total Pages:</strong> {book.totalPages}
-                </p>
-                <p>
-                  <strong>Rating:</strong> {book.rating}
-                </p>
-                <p>
-                  <strong>Publish Date:</strong> {book.publishesDate}
-                </p>
-                <p>
-                  <strong>Price:</strong> {formatCurrency(book.price)}
-                </p>
-                <p>
-                  <strong>Quantity:</strong> {book.quantity}
-                </p>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<ShoppingCartIcon />}
-                  onClick={() => handleAddToCart(book)}
-                  sx={{
-                    fontSize: "8px",
-                    bgcolor: colors.blue,
-                    "&:hover": {
-                      bgcolor: colors.sky,
-                    },
-                  }}
-                >
-                  Add to Cart
-                </Button>
+                <div className="book-text">
+                  <h1>{book.title}</h1>
+                  <p>
+                    <strong>Total Pages:</strong> {book.totalPages}
+                  </p>
+                  <p>
+                    <strong>Rating:</strong> {book.rating}
+                  </p>
+                  <p>
+                    <strong> Publish Date:</strong> {book.publishesDate}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> {formatCurrency(book.price)}
+                  </p>
+                </div>
+                {book && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ShoppingCartIcon />}
+                    onClick={() => handleAddToCart(book)}
+                    sx={{
+                      fontSize: "8px",
+                      bgcolor: colors.blue,
+                      "&:hover": {
+                        bgcolor: colors.sky,
+                      },
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
               </div>
             </div>
           ))}
@@ -149,23 +142,22 @@ const BookSection: React.FC = () => {
         {books.slice(0, 10).map((book, index) => (
           <div key={index} className="book">
             <div className="book-details">
-              <h2>{book.title}</h2>
-              <p>
-                <strong>Total Pages:</strong> {book.totalPages}
-              </p>
-              <p>
-                <strong>Rating:</strong> {book.rating}
-              </p>
-              <p>
-                <strong>Publish Date:</strong> {book.publishesDate}
-              </p>
-              <p>
-                <strong>Price:</strong> {formatCurrency(book.price)}
-              </p>
-              <p>
-                <strong>Quantity:</strong> {book.quantity}
-              </p>
-              <div className="button-container">
+              <div className="book-text">
+                <h2>{book.title}</h2>
+                <p>
+                  <strong>Total Pages:</strong> {book.totalPages}
+                </p>
+                <p>
+                  <strong>Rating:</strong> {book.rating}
+                </p>
+                <p>
+                  <strong> Publish Date:</strong> {book.publishesDate}
+                </p>
+                <p>
+                  <strong>Price:</strong> {formatCurrency(book.price)}
+                </p>
+              </div>
+              {book.title && ( // Conditionally render the button when book title is available
                 <Button
                   variant="contained"
                   color="primary"
@@ -181,7 +173,7 @@ const BookSection: React.FC = () => {
                 >
                   Add to Cart
                 </Button>
-              </div>
+              )}
             </div>
           </div>
         ))}
