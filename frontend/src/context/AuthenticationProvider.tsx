@@ -4,11 +4,8 @@ import { User } from "../components/Type/UserType";
 import { Member } from "../components/Type/MemberType";
 import { useNavigate } from "react-router-dom";
 import { Book2 } from "../components/Type/BookType";
-import { ShoppingCart } from "../components/Cart/ShoppingCart";
 
 interface AuthContextType {
-  openCart: () => void;
-  closeCart: () => void;
   isAuthenticated: boolean;
   user: User | null;
   member: Member | null;
@@ -18,8 +15,6 @@ interface AuthContextType {
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  openCart: () => null,
-  closeCart: () => null,
   isAuthenticated: false,
   user: null,
   member: null,
@@ -41,15 +36,11 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   const [user, setUser] = useState<User | null>(null);
   const [member, setMember] = useState<Member | null>(null);
   const [book, setBook] = useState<Book2[] | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedAuthState = sessionStorage.getItem("isAuthenticated");
-
     if (storedAuthState === "true") {
       setIsAuthenticated(true);
       const storedUser = sessionStorage.getItem("user");
@@ -66,14 +57,16 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   }, [onReady]);
 
   const handleLogin = async (user: User) => {
+    const header = {
+      headers: { "Content-Type": "application/json" },
+    };
     try {
-      const header = {
-        headers: { "Content-Type": "application/json" },
-      };
-
       const res = await axios.post("http://localhost:8080/login", user, header);
       const jwtToken = res.headers.authorization;
+<<<<<<< HEAD
       console.log(jwtToken);
+=======
+>>>>>>> parent of 152ba0a (fixed cart)
 
       if (jwtToken) {
         sessionStorage.setItem("jwt", jwtToken);
@@ -85,6 +78,7 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
         );
         user.role = temp.data.role;
         sessionStorage.setItem("user", JSON.stringify(user));
+<<<<<<< HEAD
 
         const memLink = temp.data._links.member.href;
         const memberResponse = await axios.get(memLink, header);
@@ -102,6 +96,22 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
         setIsAuthenticated(true);
         setUser(user);
         console.log(sessionStorage.getItem("book"));
+=======
+        setIsAuthenticated(true);
+        setUser(user);
+        const memLink = temp.data._links.member.href;
+        const memberResponse = await axios.get(memLink, header);
+        setMember(memberResponse.data);
+        sessionStorage.setItem("member", JSON.stringify(memberResponse.data));
+        const bookLink = memberResponse.data._links.books.href;
+        const bookResponse = await axios.get(bookLink, header);
+
+        setBook(bookResponse.data._embedded);
+        sessionStorage.setItem(
+          "book",
+          JSON.stringify(bookResponse.data._embedded)
+        );
+>>>>>>> parent of 152ba0a (fixed cart)
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -130,8 +140,6 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   return (
     <AuthContext.Provider
       value={{
-        openCart,
-        closeCart,
         isAuthenticated,
         user,
         member,
@@ -141,7 +149,6 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
       }}
     >
       {children}
-      <ShoppingCart isOpen={isOpen} />
     </AuthContext.Provider>
   );
 };

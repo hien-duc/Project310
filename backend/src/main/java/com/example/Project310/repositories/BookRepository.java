@@ -23,6 +23,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 	List<Book> findByPublishesDate(@Param("publishesDate") String publishesDate);
 
 	List<Book> findByIsbnnumber(@Param("isbnnumber") String isbnnumber);
+<<<<<<< HEAD
 
 	@Query("SELECT DISTINCT b FROM Book b LEFT JOIN FETCH b.author author LEFT JOIN FETCH b.member member LEFT JOIN FETCH b.rental rental")
 	List<Book> findAllWithEagerRelationships();
@@ -32,5 +33,9 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 //
 //	@Query("SELECT b FROM Book b JOIN b.member m WHERE m.id = :memberId")
 //	List<Book> findByMemberId(@Param("memberId") Long memberId);
+=======
+	
+	 List<Book> findByMember(@Param("member")Member member);
+>>>>>>> parent of 152ba0a (fixed cart)
 
 }
