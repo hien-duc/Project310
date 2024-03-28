@@ -32,8 +32,6 @@ public class Author {
 	public Author() {
 	}
 
-
-
 	public List<Book> getBooks() {
 		return books;
 	}
@@ -42,7 +40,7 @@ public class Author {
 		this.books = books;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

@@ -27,8 +27,9 @@ public class Rental {
 
 	public Rental() {
 	}
+	
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

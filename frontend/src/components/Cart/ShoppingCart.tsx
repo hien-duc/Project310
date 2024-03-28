@@ -10,7 +10,7 @@ type ShoppingCartProps = {
 };
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { book, closeCart } = useContext(AuthContext);
-  if (!book) return;
+  if (book?.length !== 0) return;
   const uniqueBooks = book.filter(
     (book, index, self) =>
       index === self.findIndex((b) => b.isbnnumber === book.isbnnumber)

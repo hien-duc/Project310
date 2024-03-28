@@ -1,10 +1,14 @@
 package com.example.Project310.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.persistence.*;
 
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 public class Book {
 
 	@Id
@@ -21,21 +25,16 @@ public class Book {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
-	@JsonIgnore
 	private Author author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "member_id")
-	@JsonIgnore
 	private Member member;
 
 	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
 			CascadeType.DETACH }, fetch = FetchType.EAGER)
-	@JsonIgnore
 	@JoinColumn(name = "rental_id")
 	private Rental rental;
-
-	
 
 	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
 			double quantity, Author author, Member member, Rental rental) {
@@ -55,12 +54,44 @@ public class Book {
 	public Book() {
 	}
 
-	public double getQuantity() {
-		return quantity;
+	public Long getId() {
+		return id;
 	}
 
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(String totalPages) {
+		this.totalPages = totalPages;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+
+	public String getPublishesDate() {
+		return publishesDate;
+	}
+
+	public void setPublishesDate(String publishesDate) {
+		this.publishesDate = publishesDate;
 	}
 
 	public String getIsbnnumber() {
@@ -69,6 +100,14 @@ public class Book {
 
 	public void setIsbnnumber(String isbnnumber) {
 		this.isbnnumber = isbnnumber;
+	}
+
+	public double getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
 	}
 
 	public double getPrice() {
@@ -101,49 +140,5 @@ public class Book {
 
 	public void setRental(Rental rental) {
 		this.rental = rental;
-	}
-
-	public Author getAuthors() {
-		return author;
-	}
-
-	public void setAuthors(Author authors) {
-		this.author = authors;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getTotalPages() {
-		return totalPages;
-	}
-
-	public void setTotalPages(String totalPages) {
-		this.totalPages = totalPages;
-	}
-
-	public double getRating() {
-		return rating;
-	}
-
-	public void setRating(double rating) {
-		this.rating = rating;
-	}
-
-	public String getPublishesDate() {
-		return publishesDate;
-	}
-
-	public void setPublishesDate(String publishesDate) {
-		this.publishesDate = publishesDate;
 	}
 }

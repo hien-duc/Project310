@@ -51,7 +51,7 @@ public class Member {
 		this.books = books;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

@@ -143,6 +143,10 @@ const StyledButton = styled.button`
 
 const NavBar: React.FC = () => {
   const { member, book, openCart } = useContext(AuthContext);
+  let length = -1;
+  if (book !== null) {
+    length = book.length;
+  }
   return (
     <Nav>
       <A href="/homePage">
@@ -195,7 +199,7 @@ const NavBar: React.FC = () => {
           <StyledButton onClick={openCart}>
             <ShoppingCartIcon />
           </StyledButton>
-          {book && book.length !== 0 ? <Badge>{book.length}</Badge> : null}
+          {length !== -1 ? <Badge>{length}</Badge> : null}
         </CartContainer>
 
         {member !== null ? (

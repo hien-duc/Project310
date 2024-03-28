@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -47,11 +48,10 @@ public class Project310Application implements CommandLineRunner {
 			"One Car And The Road", "Stormweaver’s Saga", "Yesterday is Today", "Innocent Eyes", "Behind the Door",
 			"Beyond the Horizon", "Whispers of the Waning Moon", "Slay Like a Princess", "The Lost Portrait",
 			"Heart Me", "Christmas Turtle", "One Way Ride" };
-	private static final String[] ISBNS = { "9780142437209", "9780446310789", 	"9780451524935", "9780141187761",
-			"9780316769488", "9781142437209", "9782446310789", "	9780421524935", "9782141187761",
-			"9780316769288", "9780122437209", "9780446312289", "9780451524925", "9780141187721",
-			"9780316769428","9782242437209", "9780446312289", "9780451524225", "9780141187722",
-			"9780322769488",};
+	private static final String[] ISBNS = { "9780142437209", "9780446310789", "9780451524935", "9780141187761",
+			"9780316769488", "9781142437209", "9782446310789", "	9780421524935", "9782141187761", "9780316769288",
+			"9780122437209", "9780446312289", "9780451524925", "9780141187721", "9780316769428", "9782242437209",
+			"9780446312289", "9780451524225", "9780141187722", "9780322769488", };
 	private static final double[] RATINGS = { 4.5, 4.3, 4.8, 4.1, 4.7 };
 	private static final String[] PUBLISH_DATES = { "01/01/2000", "05/12/1995", "10/22/2010", "03/30/1980",
 			"07/17/2005" };
@@ -97,8 +97,8 @@ public class Project310Application implements CommandLineRunner {
 		authorRepository.saveAll(authors);
 		memberRepository.saveAll(members);
 //		rentalRepository.saveAll(rentals);
-		bookRepository.saveAll(books);
 		urepository.saveAll(appUsers);
+		bookRepository.saveAll(books);
 
 		// Print generated data for verification
 		System.out.println("Authors:");
@@ -153,8 +153,8 @@ public class Project310Application implements CommandLineRunner {
 		return members;
 	}
 
-	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members,
-			List<Rental> rentals, RentalRepository rentalRepository) {
+	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members, List<Rental> rentals,
+			RentalRepository rentalRepository) {
 		List<Book> books = new ArrayList<>();
 		List<Rental> shuffledRentals = new ArrayList<>(rentals);
 
@@ -173,13 +173,19 @@ public class Project310Application implements CommandLineRunner {
 			String bookId = MEMBER_IDS[random.nextInt(BOOK_IDS.length)];
 			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
 			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
-			
+
 			for (int j = 0; j < 3; j++) {
 				Rental rental = new Rental(memberId, bookId, dueDate, rentDate);
 				rentalRepository.save(rental);
 //				Rental rental = shuffledRentals.get(i);
-				books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, 3, author, member,
-						rental));
+				Book book = new Book(title, totalPages, rating, publishesDate, price, isbnNumber, 3, author, member,
+						rental);
+				book.setAuthor(author);
+				book.setMember(member);
+				book.setRental(rental);
+				Hibernate.initialize(book.getAuthor()); // initialize lazy-loaded author
+				Hibernate.initialize(book.getMember()); // initialize lazy-loaded member
+				books.add(book);
 			}
 
 		}
