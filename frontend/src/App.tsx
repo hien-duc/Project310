@@ -12,7 +12,7 @@ import NavBar from "./components/User-Side/Navbar";
 import MemberList from "./components/Member/MemberList";
 import Login from "./components/Authentication/Login";
 import Register from "./components/Authentication/Register";
-
+import "bootstrap/dist/css/bootstrap.css";
 const queryClient = new QueryClient();
 
 function App() {

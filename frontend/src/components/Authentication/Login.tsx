@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ redirectPath }) => {
 
   const handleLogin = async () => {
     await login(user);
-    if (!sessionStorage.getItem("jwt")) {
+    if (!sessionStorage.getItem("user")) {
       setOpen(true);
     } else {
       navigate(redirectPath || "/homePage");

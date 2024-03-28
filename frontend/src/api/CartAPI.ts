@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { BookForAdding, BookEntry, BookResponse } from "../components/Type/BookType";
+import { BookResponse, Book2 } from "../components/Type/BookType";
 import axios, { AxiosRequestConfig } from "axios";
-import { AuthContext } from "../context/AuthenticationProvider";
 import { User } from "../components/Type/UserType";
+import { Member } from "../components/Type/MemberType";
 
 export const getAxiosConfig = (): AxiosRequestConfig => {
   const token = localStorage.getItem("jwt");
@@ -15,11 +14,10 @@ export const getAxiosConfig = (): AxiosRequestConfig => {
 };
 
 export const getCartProducts = async (user: User): Promise<BookResponse[]> => {
-
   const response = await axios.get(
-    "http://localhost:8080/api/appUsers/search/findByUsername?username=" + user.username,
-    getAxiosConfig()
-    );
+    "http://localhost:8080/api/books/search/findByUsername?username=" +
+      user.username
+  );
 
   return response.data._embedded.books;
 };
@@ -29,31 +27,23 @@ export const deleteBook = async (link: string): Promise<BookResponse> => {
   return response.data;
 };
 
-export const doAddBook = async (book: BookForAdding): Promise<BookResponse> => {
+export const doAddBookCart = async (
+  book: Book2,
+  member: Member,
+  user: User
+): Promise<BookResponse> => {
+  const temp = await axios.get(
+    "http://localhost:8080/api/members/search/findByUsername?username=" +
+      user?.username
+  );
+  const MemberResponse = temp.data._links.self.href;
+  const memberId = extractIdFromHref(MemberResponse);
+
   try {
-    // First, save the author
-    const responseAuthor = await axios.post(
-      "http://localhost:8080/api/authors",
-      book.authors,
-      getAxiosConfig()
-    );
-
-    // Assuming the author API returns the created author's ID in the response links
-    const authorId = extractIdFromHref(responseAuthor.data._links.self.href);
-
-    // Update the book's author ID with the created author's ID
-    const bookWithAuthorId: BookForAdding = {
-      ...book,
-      authors: { ...book.authors, id: authorId },
-    };
-
-    // Now, save the book
     const responseBook = await axios.post(
-      "http://localhost:8080/api/books",
-      bookWithAuthorId,
-      getAxiosConfig()
+      "http://localhost:8080/api/members/" + memberId + "/books",
+      book
     );
-
     return responseBook.data;
   } catch (error) {
     // Handle errors here
@@ -64,38 +54,4 @@ export const doAddBook = async (book: BookForAdding): Promise<BookResponse> => {
 const extractIdFromHref = (href: string): string => {
   const segments = href.split("/");
   return segments[segments.length - 1];
-};
-
-export const updateBook = async (
-  bookEntry: BookEntry
-): Promise<BookResponse> => {
-  try {
-    // First, save the author if it doesn't exist yet
-    if (!bookEntry.book.authors.id) {
-      const responseAuthor = await axios.post(
-        "http://localhost:8080/api/authors",
-        bookEntry.book.authors,
-        getAxiosConfig()
-      );
-
-      // Assuming the author API returns the created author's ID in the response links
-      const authorId = extractIdFromHref(responseAuthor.data._links.self.href);
-
-      // Update the book's author ID with the created author's ID
-      bookEntry.book.authors.id = authorId;
-    }
-
-    // Now, update the book
-    const response = await axios.put(
-      bookEntry.url,
-      bookEntry.book,
-      getAxiosConfig()
-    );
-
-    return response.data;
-  } catch (error) {
-    // Handle errors here
-    console.error("Error updating book:", error);
-    throw error;
-  }
 };
