@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import BookDialogContent from "./BookDialogContent"; // Adjusted import
+import BookDialogContent from "./BookDialogContent";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
-import { Book, BookResponse, BookEntry } from "./BookType"; // Assuming you have Book, BookResponse, and BookEntry types defined
-import { updateBook } from "../../api/BookAPI"; // Assuming you have an updateBook function in your book API
+import { BookForAdding, BookResponse, BookEntry } from "../Type/BookType";
+import { updateBook } from "../../api/BookAPI";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type FormProps = {
@@ -20,13 +20,14 @@ function EditBook({ bookData }: FormProps) {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
-  const [book, setBook] = useState<Book>({
+  const [book, setBook] = useState<BookForAdding>({
     title: "",
     totalPages: "",
     rating: 0,
     publishesDate: "",
     price: 0,
     isbnnumber: "",
+    quantity: 0,
     authors: {
       id: "",
       firstName: "",
@@ -53,6 +54,7 @@ function EditBook({ bookData }: FormProps) {
       publishesDate: bookData.publishesDate,
       price: bookData.price,
       isbnnumber: bookData.isbnnumber,
+      quantity: bookData.quantity,
       authors: {
         id: "",
         firstName: bookData.authors.firstName,
@@ -77,6 +79,7 @@ function EditBook({ bookData }: FormProps) {
       publishesDate: "",
       price: 0,
       isbnnumber: "",
+      quantity: 0,
       authors: {
         id: "",
         firstName: "",

@@ -27,6 +27,15 @@ const Register: React.FC = () => {
     }));
   };
 
+  // const { mutate } = useMutation(fetchUser, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(["books"]);
+  //   },
+  //   onError: (err) => {
+  //     console.error(err);
+  //   },
+  // });
+
   const handleRegister = async () => {
     try {
       // Fetch user data to check if username exists

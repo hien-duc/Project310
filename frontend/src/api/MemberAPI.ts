@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { Member, MemberEntry } from "../components/Member/MemberType";
+import { Member, MemberEntry } from "../components/Type/MemberType";
 
 const getAxiosConfig = (): AxiosRequestConfig => {
-  const token = localStorage.getItem("jwt");
+  const token = sessionStorage.getItem("jwt");
   return {
     headers: {
       Authorization: token,
@@ -31,12 +31,6 @@ export const doAddMember = async (member: Member): Promise<void> => {
   );
 };
 
-export const updateMember = async (
-  memberEntry: MemberEntry
-): Promise<void> => {
-  await axios.put(
-    memberEntry.url,
-    memberEntry.member,
-    getAxiosConfig()
-  );
+export const updateMember = async (memberEntry: MemberEntry): Promise<void> => {
+  await axios.put(memberEntry.url, memberEntry.member, getAxiosConfig());
 };

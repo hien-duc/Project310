@@ -1,24 +1,29 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import { User } from "../components/Authentication/UserType";
-import { Member } from "../components/Member/MemberType";
+import { User } from "../components/Type/UserType";
+import { Member } from "../components/Type/MemberType";
 import { useNavigate } from "react-router-dom";
-import { Book } from "../components/Book/BookType";
+import { Book2 } from "../components/Type/BookType";
+import { ShoppingCart } from "../components/Cart/ShoppingCart";
 
 interface AuthContextType {
+  openCart: () => void;
+  closeCart: () => void;
   isAuthenticated: boolean;
   user: User | null;
   member: Member | null;
-  book: Book[] | null;
+  book: Book2[] | null;
   login: (user: User) => Promise<void>;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
+  openCart: () => null,
+  closeCart: () => null,
   isAuthenticated: false,
   user: null,
   member: null,
-  book: null,
+  book: [],
   login: async () => {},
   logout: () => {},
 });
@@ -35,17 +40,19 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [member, setMember] = useState<Member | null>(null);
-  const [book, setBook] = useState<Book[] | null>(null);
-
-  const navigate = useNavigate();
+  const [book, setBook] = useState<Book2[] | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const openCart = () => setIsOpen(true);
+  const closeCart = () => setIsOpen(false);
 
   useEffect(() => {
-    const storedAuthState = localStorage.getItem("isAuthenticated");
+    const storedAuthState = sessionStorage.getItem("isAuthenticated");
+
     if (storedAuthState === "true") {
       setIsAuthenticated(true);
-      const storedUser = localStorage.getItem("user");
-      const storedMember = localStorage.getItem("member");
-      const storedBook = localStorage.getItem("book");
+      const storedUser = sessionStorage.getItem("user");
+      const storedMember = sessionStorage.getItem("member");
+      const storedBook = sessionStorage.getItem("book");
 
       if (storedUser && storedMember && storedBook) {
         setUser(JSON.parse(storedUser));
@@ -57,66 +64,37 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   }, [onReady]);
 
   const handleLogin = async (user: User) => {
-    const header = {
-      headers: { "Content-Type": "application/json" },
-    };
     try {
+      const header = {
+        headers: { "Content-Type": "application/json" },
+      };
+
       const res = await axios.post("http://localhost:8080/login", user, header);
       const jwtToken = res.headers.authorization;
-<<<<<<< HEAD
-      console.log(jwtToken);
-=======
->>>>>>> parent of 152ba0a (fixed cart)
-
       if (jwtToken) {
-        localStorage.setItem("jwt", jwtToken);
-        localStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("jwt", jwtToken);
+        sessionStorage.setItem("isAuthenticated", "true");
         const temp = await axios.get(
           "http://localhost:8080/api/appUsers/search/findByUsername?username=" +
             user.username,
           header
         );
         user.role = temp.data.role;
-<<<<<<< HEAD
         sessionStorage.setItem("user", JSON.stringify(user));
-<<<<<<< HEAD
 
         const memLink = temp.data._links.member.href;
         const memberResponse = await axios.get(memLink, header);
+
         sessionStorage.setItem("member", JSON.stringify(memberResponse.data));
-
         const bookLink = memberResponse.data._links.books.href;
         const bookResponse = await axios.get(bookLink, header);
-        sessionStorage.setItem(
-          "book",
-          JSON.stringify(bookResponse.data._embedded.books)
-        );
+        const books = bookResponse.data._embedded.books;
 
+        sessionStorage.setItem("book", JSON.stringify(books));
+        setBook(books);
         setMember(memberResponse.data);
-        setBook(bookResponse.data._embedded);
         setIsAuthenticated(true);
         setUser(user);
-        console.log(sessionStorage.getItem("book"));
-=======
-=======
-        localStorage.setItem("user", JSON.stringify(user));
-
->>>>>>> parent of d055d8c (added redirect path when authenticate)
-        setIsAuthenticated(true);
-        setUser(user);
-
-        const memLink = temp.data._links.member.href;
-        const memberResponse = await axios.get(memLink, header);
-        setMember(memberResponse.data);
-        localStorage.setItem("member", JSON.stringify(memberResponse.data));
-        const bookLink = memberResponse.data._links.books.href;
-        const bookResponse = await axios.get(bookLink, header);
-        setBook(bookResponse.data._embedded);
-        localStorage.setItem(
-          "book",
-          JSON.stringify(bookResponse.data._embedded)
-        );
->>>>>>> parent of 152ba0a (fixed cart)
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -127,15 +105,18 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
       setIsAuthenticated(false);
       setUser(null);
       setMember(null);
+      setBook(null);
     }
   };
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("user");
-    localStorage.removeItem("member");
-    localStorage.removeItem("book");
+    sessionStorage.removeItem("jwt");
+    sessionStorage.removeItem("isAuthenticated");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("member");
+    sessionStorage.removeItem("book");
     setIsAuthenticated(false);
     setUser(null);
     navigate("/homePage");
@@ -144,6 +125,8 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
   return (
     <AuthContext.Provider
       value={{
+        openCart,
+        closeCart,
         isAuthenticated,
         user,
         member,
@@ -153,6 +136,7 @@ const AuthenticationProvider: React.FC<AuthenticationProviderProps> = ({
       }}
     >
       {children}
+      <ShoppingCart isOpen={isOpen} />
     </AuthContext.Provider>
   );
 };

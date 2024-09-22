@@ -106,8 +106,8 @@ const ButtonContainer = styled.div`
 `;
 const Badge = styled.span`
   position: absolute;
-  top: 30px;
-  right: 240px;
+  bottom: 13px;
+  right: 8px;
   background-color: red;
   color: white;
   font-size: 12px;
@@ -119,17 +119,31 @@ const Badge = styled.span`
   }
 `;
 
-const NavBar: React.FC = () => {
-<<<<<<< HEAD
-  const { member, book, openCart } = useContext(AuthContext);
-  let length = -1;
-  if (book !== null) {
-    length = book.length;
-  }
+const CartContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
 
-=======
-  const { member, book } = useContext(AuthContext);
->>>>>>> parent of d055d8c (added redirect path when authenticate)
+const StyledButton = styled.button`
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  svg {
+    margin-right: 8px;
+    color: ${colors.mauve};
+    transition: fill 0.3s;
+  }
+`;
+
+const NavBar: React.FC = () => {
+  const { member, book, openCart } = useContext(AuthContext);
+
   return (
     <Nav>
       <A href="/homePage">
@@ -178,34 +192,24 @@ const NavBar: React.FC = () => {
         </Li>
       </Ul>
       <ButtonContainer>
-<<<<<<< HEAD
         <CartContainer>
           <StyledButton onClick={openCart}>
             <ShoppingCartIcon />
           </StyledButton>
-          {length !== -1 ? <Badge>{length}</Badge> : null}
+          {book && book.length !== 0 ? (
+            <Badge>{book.length}</Badge>
+          ) : null}
         </CartContainer>
 
-=======
-        <A href="/cart">
-          <ShoppingCartIcon />
-        </A>
-<<<<<<< HEAD
-        {/* {res && res !== 0 ? <Badge>{book.length}</Badge> : null} */}
->>>>>>> parent of 152ba0a (fixed cart)
-=======
-        {book?.length != 0 ? <Badge>{book?.length}</Badge> : <></>}
->>>>>>> parent of d055d8c (added redirect path when authenticate)
         {member !== null ? (
           <A href="#">
             <AccountCircleIcon />
-            {member.firstName}
+            {member.firstName || ""}
           </A>
         ) : (
           <SignInButton to="/login">Sign In</SignInButton>
         )}
       </ButtonContainer>
-      {/* </ShoppingCart> */}
     </Nav>
   );
 };

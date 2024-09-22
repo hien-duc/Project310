@@ -1,7 +1,7 @@
 import React from "react";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
-import { Member } from "./MemberType";
+import { Member } from "../Type/MemberType";
 import { Stack } from "@mui/material";
 
 type DialogFormProps = {

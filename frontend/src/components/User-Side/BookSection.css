@@ -24,7 +24,8 @@
   border: 0.5px solid #c0c0c0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: row;
+  flex-direction: column; 
+  position: relative;
 }
 
 .book-text {
@@ -36,9 +37,9 @@
   transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
 }
 
-.book h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
+.book h1 {
+  margin-top: 0; /* Change to h1 */
+  margin-bottom: 10px; /* Change to h1 */
 }
 
 .book p {
