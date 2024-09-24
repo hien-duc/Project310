@@ -1,7 +1,5 @@
 package com.example.Project310.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -15,30 +13,20 @@ public class Book {
 	private String totalPages;
 	private double rating;
 	private String publishesDate;
+
+	@Column(nullable = false, unique = true)
 	private String isbnnumber;
 	private double quantity;
 	private double price;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "author_id")
-	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Author author;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "member_id")
-	@JsonIgnore
-	private Member member;
-
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
-			CascadeType.DETACH }, fetch = FetchType.EAGER)
-	@JsonIgnore
-	@JoinColumn(name = "rental_id")
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Rental rental;
 
-	
-
 	public Book(String title, String totalPages, double rating, String publishesDate, double price, String isbnnumber,
-			double quantity, Author author, Member member, Rental rental) {
+			double quantity, Author author, Rental rental) {
 		super();
 		this.title = title;
 		this.totalPages = totalPages;
@@ -48,7 +36,6 @@ public class Book {
 		this.quantity = quantity;
 		this.price = price;
 		this.author = author;
-		this.member = member;
 		this.rental = rental;
 	}
 
@@ -85,14 +72,6 @@ public class Book {
 
 	public void setAuthor(Author author) {
 		this.author = author;
-	}
-
-	public Member getMember() {
-		return member;
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
 	}
 
 	public Rental getRental() {

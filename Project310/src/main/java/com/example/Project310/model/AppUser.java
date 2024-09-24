@@ -23,9 +23,7 @@ public class AppUser {
 	@Column(nullable = false)
 	private String role;
 
-	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH,
-			CascadeType.DETACH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "member_id")
+	@OneToOne()
 	private Member member;
 
 	public AppUser() {

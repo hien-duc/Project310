@@ -8,7 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Author {
 
 	@Id
@@ -20,6 +24,7 @@ public class Author {
 	private String lastName;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+	@JsonIgnore
 	private List<Book> books;
 
 	public Author(String firstName, String middleName, String lastName) {
@@ -31,8 +36,6 @@ public class Author {
 
 	public Author() {
 	}
-
-
 
 	public List<Book> getBooks() {
 		return books;

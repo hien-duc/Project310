@@ -11,12 +11,12 @@ import com.example.Project310.model.Member;
 
 @RepositoryRestResource
 public interface MemberRepository extends CrudRepository<Member, Long> {
-	Optional<Member> findById(@Param("id") long id);
-
-	@Query("SELECT m FROM Member m JOIN m.appUser u WHERE u.username = :username")
-	Member findByUsername(@Param("username") String username);
-
-	@Query("SELECT m FROM Member m JOIN m.appUser u WHERE u.id = :userId")
-	Member findByUserId(@Param("userId")Long userId);
+//	Optional<Member> findById(@Param("id") long id);
+//
+//	@Query("SELECT m FROM Member m JOIN m.appUser u WHERE u.username = :username")
+//	Member findByUsername(@Param("username") String username);
+//
+//	@Query("SELECT m FROM Member m JOIN m.appUser u WHERE u.id = :userId")
+//	Member findByUserId(@Param("userId")Long userId);
 
 }

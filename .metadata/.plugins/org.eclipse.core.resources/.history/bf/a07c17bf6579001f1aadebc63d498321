@@ -1,0 +1,81 @@
+package com.example.Project310.model;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.*;
+
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+public class Rental {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String dueDate;
+	private String rentDate;
+	private int quantity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member member;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "rental")
+	private List<Book> books;
+
+	public Rental(Member member, String dueDate, String rentDate, int quantity) {
+		super();
+		this.dueDate = dueDate;
+		this.rentDate = rentDate;
+		this.member = member;
+		this.quantity = quantity;
+	}
+
+	public Rental() {
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public String getRentDate() {
+		return rentDate;
+	}
+
+	public void setRentDate(String rentDate) {
+		this.rentDate = rentDate;
+	}
+}

@@ -1,0 +1,69 @@
+package com.example.Project310.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Rental {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String dueDate;
+	private String rentDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member member;
+
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "rental")
+	@JsonIgnore
+	private Book book;
+
+	public Rental(Member member, String dueDate, String rentDate) {
+		super();
+		this.dueDate = dueDate;
+		this.rentDate = rentDate;
+		this.member = member;
+	}
+
+	public Rental() {
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public String getRentDate() {
+		return rentDate;
+	}
+
+	public void setRentDate(String rentDate) {
+		this.rentDate = rentDate;
+	}
+}

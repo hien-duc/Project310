@@ -2,25 +2,31 @@ package com.example.Project310.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-
 	private String firstName;
 	private String lastName;
 	private String birthDay;
+	
+	@Column(nullable = false, unique = true)
 	private String ssn;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-	private List<Book> books;
+	@JsonIgnore
+	private List<Rental> rentals;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "member")
+	@OneToOne(mappedBy = "member")
 	private AppUser appUser;
 
 	public Member(String firsName, String lastName, String birthDay, String ssn) {
@@ -32,7 +38,7 @@ public class Member {
 	}
 
 	public Member() {
-	
+
 	}
 
 	public AppUser getAppUser() {
@@ -43,12 +49,12 @@ public class Member {
 		this.appUser = appUser;
 	}
 
-	public List<Book> getBooks() {
-		return books;
+	public List<Rental> getRentals() {
+		return rentals;
 	}
 
-	public void setBooks(List<Book> books) {
-		this.books = books;
+	public void setRentals(List<Rental> rentals) {
+		this.rentals = rentals;
 	}
 
 	public long getId() {

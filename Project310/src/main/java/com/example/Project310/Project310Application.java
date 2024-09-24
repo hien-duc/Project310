@@ -47,19 +47,16 @@ public class Project310Application implements CommandLineRunner {
 			"One Car And The Road", "Stormweaver’s Saga", "Yesterday is Today", "Innocent Eyes", "Behind the Door",
 			"Beyond the Horizon", "Whispers of the Waning Moon", "Slay Like a Princess", "The Lost Portrait",
 			"Heart Me", "Christmas Turtle", "One Way Ride" };
-	private static final String[] ISBNS = { "9780142437209", "9780446310789", 	"9780451524935", "9780141187761",
-			"9780316769488", "9781142437209", "9782446310789", "	9780421524935", "9782141187761",
-			"9780316769288", "9780122437209", "9780446312289", "9780451524925", "9780141187721",
-			"9780316769428","9782242437209", "9780446312289", "9780451524225", "9780141187722",
-			"9780322769488",};
+	private static final String[] ISBNS = { "9780142437209", "9780446310789", "9780451524935", "9780141187761",
+			"9780316769488", "9781142437209", "9782446310789", "	9780421524935", "9782141187761", "9780316769288",
+			"9780122437209", "9780446312289", "9780451524925", "9780141187721", "9780316769428", "9782242437209",
+			"9780446312289", "9780451524225", "9780141187722", "9780322769488", };
 	private static final double[] RATINGS = { 4.5, 4.3, 4.8, 4.1, 4.7 };
 	private static final String[] PUBLISH_DATES = { "01/01/2000", "05/12/1995", "10/22/2010", "03/30/1980",
 			"07/17/2005" };
 	private static final String[] BIRTH_DATES = { "05/18/1988", "12/03/1992", "09/25/1985", "03/10/1990",
 			"11/05/1976" };
-	private static final String[] SSNS = { "123-45-6789", "234-56-7890", "345-67-8901", "456-78-9012", "567-89-0123" };
-	private static final String[] MEMBER_IDS = { "M123", "M456", "M789", "M012", "M345" };
-	private static final String[] BOOK_IDS = { "B123", "B456", "B789", "B012", "B345" };
+//	private static final String[] SSNS = { "123-45-6789", "234-56-7890", "345-67-8901", "456-78-9012", "567-89-0123" };
 	private static final String[] DUE_DATES = { "04/30/2024", "05/15/2024", "06/10/2024", "07/05/2024", "08/20/2024" };
 	private static final String[] RENT_DATES = { "03/30/2024", "04/15/2024", "05/10/2024", "06/05/2024", "07/20/2024" };
 	private static final String[] USERNAMES = { "user1", "user2", "user3", "user4", "user5", "user6", "user7", "user8",
@@ -87,116 +84,53 @@ public class Project310Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		List<Author> authors = generateAuthors(20);
-		List<Member> members = generateMembers(20);
-		List<Rental> rentals = generateRentals(20, members);
-		List<Book> books = generateBooks(20, authors, members, rentals, rentalRepository);
-
-		List<AppUser> appUsers = generateAppUsers(20, members);
-		// Save generated data to the database
-		authorRepository.saveAll(authors);
-		memberRepository.saveAll(members);
-//		rentalRepository.saveAll(rentals);
-		bookRepository.saveAll(books);
-		urepository.saveAll(appUsers);
-
-		// Print generated data for verification
-		System.out.println("Authors:");
-		authors.forEach(System.out::println);
-		System.out.println("\nMembers:");
-		members.forEach(System.out::println);
-		System.out.println("\nBooks:");
-		books.forEach(System.out::println);
-		System.out.println("\nRentals:");
-		rentals.forEach(System.out::println);
-
-	}
-
-	public static List<AppUser> generateAppUsers(int count, List<Member> members) {
-		List<AppUser> appUsers = new ArrayList<>();
-		List<Member> shuffledMembers = new ArrayList<>(members);
-		List<String> shuffledUsernames = Arrays.asList(USERNAMES);
-
-		Collections.shuffle(shuffledMembers);
-//		Collections.shuffle(shuffledUsernames);
-
-		Member member = shuffledMembers.get(0);
-		Member member1 = shuffledMembers.get(1);
-		appUsers.add(
-				new AppUser("user", "$2a$12$Q62s4GxCBo3mImlAub.0ruqxFQf6RySDJuWGTeBFN3QYC6tkY42.q", "USER", member));
-		appUsers.add(
-				new AppUser("admin", "$2a$12$VXaUdQOT7AWrd8ADin1sQesIdfmF.nShAvzcq/BHZtEJVgoCbDjkm", "ADMIN", member1));
-
-		return appUsers;
-	}
-
-	public static List<Author> generateAuthors(int count) {
-		List<Author> authors = new ArrayList<>();
-		for (int i = 0; i < count; i++) {
-			String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
-			String middleName = MIDDLE_NAMES[random.nextInt(MIDDLE_NAMES.length)];
-			String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
-			authors.add(new Author(firstName, middleName, lastName));
-		}
-		return authors;
-	}
-
-	public static List<Member> generateMembers(int count) {
-		List<Member> members = new ArrayList<>();
-		for (int i = 0; i < count; i++) {
-			String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
-			String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
-			String birthDate = BIRTH_DATES[random.nextInt(BIRTH_DATES.length)];
-			String ssn = SSNS[random.nextInt(SSNS.length)];
-			members.add(new Member(firstName, lastName, birthDate, ssn));
-		}
-		return members;
-	}
-
-	public static List<Book> generateBooks(int count, List<Author> authors, List<Member> members,
-			List<Rental> rentals, RentalRepository rentalRepository) {
-		List<Book> books = new ArrayList<>();
-		List<Rental> shuffledRentals = new ArrayList<>(rentals);
-
-		Collections.shuffle(shuffledRentals);
-
-		for (int i = 0; i < count; i++) {
-			String title = TITLES[i];
-			String totalPages = String.valueOf(random.nextInt(500) + 100);
-			double rating = RATINGS[random.nextInt(RATINGS.length)];
-			String publishesDate = PUBLISH_DATES[random.nextInt(PUBLISH_DATES.length)];
-			double price = Math.round(random.nextDouble() * 300);
-			String isbnNumber = ISBNS[random.nextInt(ISBNS.length)];
-			Author author = authors.get(random.nextInt(authors.size()));
-			Member member = members.get(random.nextInt(members.size()));
-			String memberId = MEMBER_IDS[random.nextInt(MEMBER_IDS.length)];
-			String bookId = MEMBER_IDS[random.nextInt(BOOK_IDS.length)];
-			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
-			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
-			
-			for (int j = 0; j < 3; j++) {
-				Rental rental = new Rental(memberId, bookId, dueDate, rentDate);
-				rentalRepository.save(rental);
-//				Rental rental = shuffledRentals.get(i);
-				books.add(new Book(title, totalPages, rating, publishesDate, price, isbnNumber, 3, author, member,
-						rental));
-			}
-
-		}
-		return books;
-	}
-
-	public static List<Rental> generateRentals(int count, List<Member> members) {
-		List<Rental> rentals = new ArrayList<>();
-		for (int i = 0; i < count; i++) {
-			String memberId = MEMBER_IDS[random.nextInt(MEMBER_IDS.length)];
-			String bookId = MEMBER_IDS[random.nextInt(BOOK_IDS.length)];
-			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
-			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
-			Rental rental = new Rental(memberId, bookId, dueDate, rentDate);
-			rentals.add(rental);
-		}
-		return rentals;
+//		for (int i = 0; i < 20; i++) {
+//			String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
+//			String middleName = MIDDLE_NAMES[random.nextInt(MIDDLE_NAMES.length)];
+//			String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
+//			Author author = new Author(firstName, middleName, lastName);
+//			authorRepository.save(author);
+//
+//			String firstNameMember = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
+//			String lastNameMember = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
+//			String birthDate = BIRTH_DATES[random.nextInt(BIRTH_DATES.length)];
+//
+//			StringBuilder res = new StringBuilder();
+//			for (int j = 0; j < 5; j++) {
+//				res.append(i);
+//			}
+//
+//			String ssn = res.toString();
+//			Member member = new Member(firstNameMember, lastNameMember, birthDate, ssn);
+//			memberRepository.save(member);
+//
+//			String dueDate = DUE_DATES[random.nextInt(DUE_DATES.length)];
+//			String rentDate = RENT_DATES[random.nextInt(RENT_DATES.length)];
+//			Rental rental = new Rental(member, dueDate, rentDate, 3);
+//			rentalRepository.save(rental);
+//
+//			String title = TITLES[random.nextInt(TITLES.length)];
+//			String totalPages = String.valueOf(random.nextInt(500) + 100);
+//			double rating = RATINGS[random.nextInt(RATINGS.length)];
+//			String publishesDate = PUBLISH_DATES[random.nextInt(PUBLISH_DATES.length)];
+//			double price = Math.round(random.nextDouble() * 300);
+//
+//			String isbnNumber = res.toString();
+//
+//			// Create and add a new book with the rental
+//			Book book = new Book(title, totalPages, rating, publishesDate, price, isbnNumber, 3, author, rental);
+//			bookRepository.save(book);
+//		}
+//
+//		Member member = new Member("asd", "bcd", "05/10/2024", "123-45-6789");
+//		memberRepository.save(member);
+//		Member member1 = new Member("asd", "bcd", "05/10/2024", "123-45-123123");
+//		memberRepository.save(member);
+//		memberRepository.save(member1);
+//		urepository.save(
+//				new AppUser("user", "$2a$12$Q62s4GxCBo3mImlAub.0ruqxFQf6RySDJuWGTeBFN3QYC6tkY42.q", "USER", member));
+//		urepository.save(
+//				new AppUser("admin", "$2a$12$VXaUdQOT7AWrd8ADin1sQesIdfmF.nShAvzcq/BHZtEJVgoCbDjkm", "ADMIN", member1));
 	}
 
 }

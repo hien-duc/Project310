@@ -1,28 +1,37 @@
 package com.example.Project310.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Rental {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String memberId;
-	private String bookId;
 	private String dueDate;
 	private String rentDate;
+	private int quantity;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "rental")
-	private Book books;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member member;
 
-	public Rental(String memberId, String bookId, String dueDate, String rentDate) {
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "rental")
+	@JsonIgnore
+	private List<Book> books;
+
+	public Rental(Member member, String dueDate, String rentDate, int quantity) {
 		super();
-		this.memberId = memberId;
-		this.bookId = bookId;
 		this.dueDate = dueDate;
 		this.rentDate = rentDate;
+		this.member = member;
+		this.quantity = quantity;
 	}
 
 	public Rental() {
@@ -32,28 +41,28 @@ public class Rental {
 		return id;
 	}
 
-	public Book getBooks() {
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public List<Book> getBooks() {
 		return books;
 	}
 
-	public void setBooks(Book books) {
+	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
 
-	public String getMemberId() {
-		return memberId;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-
-	public String getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(String bookId) {
-		this.bookId = bookId;
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public String getDueDate() {
